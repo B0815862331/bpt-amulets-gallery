@@ -25,7 +25,6 @@
             color: #fff; 
             padding-bottom: 20px;
             overflow-x: hidden;
-            user-select: none;
         }
         
         header { 
@@ -40,30 +39,6 @@
             border-bottom: 1px solid #333; 
             margin-bottom: 20px;
             position: relative;
-        }
-        
-        .welcome-message {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            background: rgba(0, 204, 136, 0.9);
-            color: #000;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-        
-        .welcome-message:hover {
-            background: #00ffaa;
-            transform: translateY(-50%) scale(1.1);
         }
         
         .tab-btn { 
@@ -179,48 +154,6 @@
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
-        }
-        
-        .photo-actions {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            display: flex;
-            gap: 5px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .photo:hover .photo-actions {
-            opacity: 1;
-        }
-        
-        .photo-action-btn {
-            background: rgba(0,0,0,0.7);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            width: 25px;
-            height: 25px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .photo-action-btn:hover {
-            background: rgba(0,0,0,0.9);
-            transform: scale(1.1);
-        }
-        
-        .photo-action-btn.delete {
-            background: rgba(255,0,0,0.7);
-        }
-        
-        .photo-action-btn.delete:hover {
-            background: rgba(255,0,0,0.9);
         }
         
         .modal { 
@@ -410,11 +343,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: grab;
-        }
-        
-        #imageModalContent.dragging {
-            cursor: grabbing;
         }
         
         .zoomable-image {
@@ -423,20 +351,14 @@
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transition: transform 0.1s ease;
-            cursor: move;
+            cursor: zoom-in;
             transform-origin: center center;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-        
-        .zoomable-image.dragging {
-            cursor: grabbing;
         }
         
         .zoomable-image.fullscreen {
             max-width: 95vw;
             max-height: 95vh;
-            cursor: move;
+            cursor: zoom-out;
         }
         
         .zoom-controls {
@@ -558,11 +480,6 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            cursor: grab;
-        }
-        
-        .fullscreen-mode.dragging {
-            cursor: grabbing;
         }
         
         .fullscreen-image {
@@ -570,13 +487,6 @@
             max-height: 95vh;
             object-fit: contain;
             border-radius: 8px;
-            cursor: move;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-        
-        .fullscreen-image.dragging {
-            cursor: grabbing;
         }
         
         .fullscreen-controls {
@@ -636,54 +546,6 @@
         .fullscreen-close:hover {
             background: rgba(255,0,0,0.7);
             transform: scale(1.1);
-        }
-        
-        /* Drag Info */
-        .drag-info {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-        
-        .drag-info.show {
-            opacity: 1;
-        }
-        
-        /* History Styles */
-        .history-item {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-left: 4px solid #00cc88;
-        }
-        
-        .history-type {
-            font-weight: bold;
-            color: #00cc88;
-            margin-bottom: 5px;
-        }
-        
-        .history-details {
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        
-        .history-time {
-            font-size: 0.8rem;
-            color: #888;
-            text-align: right;
-            margin-top: 5px;
         }
         
         /* Form Styles */
@@ -803,8 +665,28 @@
             transform: translateY(-2px);
         }
 
-        .add-photo-btn {
-            background: #00cc88;
+        /* Admin Controls */
+        .admin-controls {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .admin-indicator {
+            background: #ff9900;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            background: #ff9900;
             color: #000;
             border: none;
             border-radius: 8px;
@@ -812,18 +694,15 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .add-photo-btn:hover {
-            background: #00ffaa;
+        .login-btn:hover {
+            background: #ffaa33;
             transform: translateY(-2px);
         }
 
-        .history-btn {
-            background: rgba(255,255,255,0.1);
+        .logout-btn {
+            background: #ff4444;
             color: white;
             border: none;
             border-radius: 8px;
@@ -831,87 +710,190 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .history-btn:hover {
-            background: rgba(255,255,255,0.2);
+        .logout-btn:hover {
+            background: #ff6666;
             transform: translateY(-2px);
         }
 
-        /* Audio Controls */
-        .audio-controls {
+        .readonly-overlay {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .audio-btn {
-            background: rgba(0, 204, 136, 0.9);
-            color: #000;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            display: flex;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            display: none;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .readonly-message {
+            background: rgba(0,0,0,0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+        }
+
+        .readonly-message i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: #ff9900;
+        }
+
+        .admin-settings-btn {
+            background: #3366cc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        .audio-btn:hover {
-            background: #00ffaa;
-            transform: scale(1.1);
+        .admin-settings-btn:hover {
+            background: #4477dd;
+            transform: translateY(-2px);
         }
 
-        .audio-btn.muted {
-            background: rgba(255, 100, 100, 0.9);
+        .backup-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+            flex-wrap: wrap;
         }
 
-        .audio-btn.muted:hover {
-            background: #ff6666;
+        .backup-btn {
+            background: #3366cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
+        .backup-btn:hover {
+            background: #4477dd;
+        }
+
+        .reset-btn {
+            background: #cc3333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .reset-btn:hover {
+            background: #dd4444;
+        }
+
+        /* Storage Status */
+        .storage-status {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .storage-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .storage-used {
+            height: 100%;
+            background: #00cc88;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Local Files Manager */
+        .local-files-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+
+        .local-files-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            padding: 0.5rem;
+        }
+
+        .local-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .local-file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 10px;
+        }
+
+        /* ปรับปรุงสำหรับมือถือ */
         @media (max-width: 768px) {
             #top-controls { 
                 flex-direction: column; 
                 align-items: center; 
+                padding: 1rem;
+                gap: 10px;
             }
             
             input[type="text"], select { 
                 width: 100%; 
+                max-width: 100%;
             }
             
             #gallery { 
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+                gap: 12px;
             }
             
             .modal-content {
                 padding: 15px;
+                width: 98%;
+                margin: 10px;
             }
             
             .album-photo-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
             }
             
             header {
                 font-size: 1.4rem;
                 padding: 1rem 0;
-            }
-            
-            .welcome-message {
-                right: 10px;
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
             }
             
             .nav-btn {
@@ -933,10 +915,13 @@
             }
 
             .github-link {
-                top: 10px;
-                right: 10px;
-                padding: 8px 12px;
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 10px auto;
+                width: fit-content;
                 font-size: 0.9rem;
+                padding: 8px 12px;
             }
             
             .fullscreen-nav {
@@ -948,22 +933,74 @@
                 padding: 10px 15px;
             }
 
-            .audio-controls {
-                bottom: 10px;
-                left: 10px;
+            .admin-controls {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                justify-content: center;
+                margin-top: 10px;
+                width: 100%;
             }
-
-            .audio-btn {
+            
+            .tab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                margin: 2px;
+            }
+            
+            .photo img {
+                height: 150px;
+            }
+            
+            .album-cover {
+                height: 120px;
+            }
+            
+            .album-photo-item img {
+                height: 120px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.2rem;
+            }
+            
+            .fullscreen-close {
+                top: 10px;
+                right: 10px;
                 width: 40px;
                 height: 40px;
-                font-size: 1rem;
+            }
+            
+            .fullscreen-counter {
+                top: 10px;
+                left: 10px;
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+            
+            .backup-controls {
+                flex-direction: column;
+            }
+            
+            .backup-controls button, .backup-controls label {
+                width: 100%;
+                text-align: center;
             }
         }
         
         @media (max-width: 480px) {
             #gallery { 
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-                gap: 12px;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+                gap: 10px;
             }
             
             .modal-content {
@@ -971,27 +1008,24 @@
             }
             
             .album-photo-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
             }
             
             .tab-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
             }
             
             .nav-btn {
                 width: 35px;
                 height: 35px;
                 font-size: 1rem;
-                padding: 0 10px;
             }
 
-            .github-link {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin: 10px auto;
-                width: fit-content;
+            header {
+                font-size: 1.2rem;
+                padding: 0.8rem 0;
             }
             
             .fullscreen-nav {
@@ -1002,9 +1036,39 @@
                 bottom: 5px;
                 padding: 8px 12px;
             }
-
-            .welcome-message {
-                display: none;
+            
+            .photo img {
+                height: 130px;
+            }
+            
+            .album-cover {
+                height: 100px;
+            }
+            
+            .album-photo-item img {
+                height: 100px;
+            }
+            
+            .empty-state {
+                padding: 1.5rem;
+                font-size: 1.1rem;
+            }
+            
+            .empty-state i {
+                font-size: 2.5rem;
+            }
+            
+            .photo-name, .album-photo-name {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+            
+            .album-name {
+                font-size: 1rem;
+            }
+            
+            .album-count {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -1015,21 +1079,35 @@
         <i class="fab fa-github"></i> View on GitHub
     </a>
 
-    <!-- Audio Controls -->
-    <div class="audio-controls">
-        <button class="audio-btn" id="volumeBtn" onclick="toggleVolume()">
-            <i class="fas fa-volume-up"></i>
-        </button>
-        <button class="audio-btn" onclick="playWelcomeMessage()" title="เล่นเสียงต้อนรับอีกครั้ง">
-            <i class="fas fa-play"></i>
-        </button>
+    <!-- Read-only Overlay -->
+    <div id="readonlyOverlay" class="readonly-overlay">
+        <div class="readonly-message">
+            <i class="fas fa-eye"></i>
+            <h3>โหมดดูอย่างเดียว</h3>
+            <p>คุณกำลังดูข้อมูลในโหมดผู้ใช้ทั่วไป</p>
+            <p>หากต้องการแก้ไขข้อมูล กรุณาเข้าสู่ระบบในฐานะผู้ดูแลระบบ</p>
+            <button class="login-btn" onclick="showAdminLogin()" style="margin-top: 1rem;">
+                <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบผู้ดูแล
+            </button>
+        </div>
     </div>
 
     <header>
         พระเครื่องแดนสยาม
-        <button class="welcome-message" onclick="playWelcomeMessage()" title="เล่นเสียงต้อนรับ">
-            <i class="fas fa-volume-up"></i>
-        </button>
+        <div class="admin-controls" id="adminControls">
+            <div class="admin-indicator" id="adminIndicator" style="display: none;">
+                <i class="fas fa-user-shield"></i> โหมดผู้ดูแลระบบ
+            </div>
+            <button class="login-btn" id="loginBtn" onclick="showAdminLogin()">
+                <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+            </button>
+            <button class="logout-btn" id="logoutBtn" onclick="adminLogout()" style="display: none;">
+                <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+            </button>
+            <button class="admin-settings-btn" id="adminSettingsBtn" onclick="showAdminSettingsModal()" style="display: none;">
+                <i class="fas fa-cog"></i> ตั้งค่า
+            </button>
+        </div>
     </header>
 
     <div id="app">
@@ -1037,14 +1115,10 @@
         <div id="top-controls">
             <button id="tabGallery" class="tab-btn active">Gallery รูป</button>
             <button id="tabAlbums" class="tab-btn">อัลบั้ม</button>
-            <button id="tabHistory" class="tab-btn">ประวัติ</button>
             <select id="categorySelect"></select>
             <input type="text" id="searchBox" placeholder="🔍 ค้นหา...">
-            <button class="add-album-btn" onclick="showCreateAlbumModal()">
-                <i class="fas fa-plus"></i> สร้างอัลบั้ม
-            </button>
-            <button class="add-photo-btn" onclick="showAddGalleryPhotoModal()">
-                <i class="fas fa-plus"></i> เพิ่มรูป
+            <button class="add-album-btn" id="addAlbumBtn" onclick="showCreateAlbumModal()">
+                <i class="fas fa-plus"></i> สร้างอัลบั้มใหม่
             </button>
         </div>
 
@@ -1058,7 +1132,7 @@
                     <button class="modal-close" onclick="closeAlbumModal()">&times;</button>
                 </div>
                 <div id="albumModalContent"></div>
-                <div class="form-actions">
+                <div class="form-actions" id="albumActions">
                     <button onclick="showAddPhotosModal()" class="secondary">
                         <i class="fas fa-plus"></i> เพิ่มรูปภาพ
                     </button>
@@ -1077,7 +1151,7 @@
                     <button class="modal-close" onclick="closeImageModal()">&times;</button>
                 </div>
                 <div id="imageModalContent">
-                    <div class="drag-info" id="dragInfo">ลากเมาส์เพื่อขยับรูปภาพ</div>
+                    <!-- Content will be dynamically added -->
                 </div>
             </div>
         </div>
@@ -1106,7 +1180,7 @@
             </div>
         </div>
 
-        <!-- Add Photos to Album Modal -->
+        <!-- Add Photos Modal -->
         <div id="addPhotosModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1125,6 +1199,29 @@
                 <div class="uploaded-files" id="uploadedFiles">
                     <!-- Uploaded files will be listed here -->
                 </div>
+                
+                <!-- Local Files Section -->
+                <div class="local-files-section">
+                    <h4>รูปภาพที่เก็บในเครื่อง</h4>
+                    <div class="storage-status">
+                        <div>พื้นที่ใช้งาน: <span id="storageUsed">0</span> / <span id="storageTotal">0</span> MB</div>
+                        <div class="storage-bar">
+                            <div class="storage-used" id="storageBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="local-files-list" id="localFilesList">
+                        <!-- Local files will be listed here -->
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="secondary" onclick="clearLocalStorage()">
+                            <i class="fas fa-trash"></i> ล้างข้อมูลทั้งหมด
+                        </button>
+                        <button type="button" onclick="saveToLocalStorage()">
+                            <i class="fas fa-save"></i> บันทึกลงเครื่อง
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="form-actions">
                     <button type="button" class="secondary" onclick="closeAddPhotosModal()">ยกเลิก</button>
                     <button type="button" onclick="savePhotosToAlbum()">บันทึกรูปภาพ</button>
@@ -1132,55 +1229,70 @@
             </div>
         </div>
 
-        <!-- Add Gallery Photo Modal -->
-        <div id="addGalleryPhotoModal" class="modal">
+        <!-- Admin Login Modal -->
+        <div id="adminLoginModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>เพิ่มรูปภาพในแกลเลอรี</h3>
-                    <button class="modal-close" onclick="closeAddGalleryPhotoModal()">&times;</button>
+                    <h3>เข้าสู่ระบบผู้ดูแล</h3>
+                    <button class="modal-close" onclick="closeAdminLoginModal()">&times;</button>
                 </div>
-                <form id="addGalleryPhotoForm">
+                <form id="adminLoginForm">
                     <div class="form-group">
-                        <label for="galleryPhotoName">ชื่อรูปภาพ</label>
-                        <input type="text" id="galleryPhotoName" required placeholder="กรอกชื่อรูปภาพ">
+                        <label for="adminUsername">ชื่อผู้ใช้</label>
+                        <input type="text" id="adminUsername" required placeholder="กรอกชื่อผู้ดูแลระบบ">
                     </div>
                     <div class="form-group">
-                        <label for="galleryPhotoCategory">หมวดหมู่</label>
-                        <select id="galleryPhotoCategory" required>
-                            <option value="">เลือกหมวดหมู่</option>
-                        </select>
+                        <label for="adminPassword">รหัสผ่าน</label>
+                        <input type="password" id="adminPassword" required placeholder="กรอกรหัสผ่าน">
                     </div>
-                    <div class="form-group">
-                        <label>อัปโหลดรูปภาพ</label>
-                        <div class="file-upload" onclick="document.getElementById('galleryPhotoUpload').click()">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>คลิกเพื่อเลือกไฟล์รูปภาพ หรือลากไฟล์มาวางที่นี่</p>
-                            <p style="font-size: 0.9rem; color: #888;">รองรับไฟล์ JPG, PNG, GIF</p>
-                        </div>
-                        <input type="file" id="galleryPhotoUpload" accept="image/*" style="display: none;" onchange="handleGalleryPhotoSelect(this.files)">
+                    <div class="form-actions">
+                        <button type="button" class="secondary" onclick="closeAdminLoginModal()">ยกเลิก</button>
+                        <button type="submit">เข้าสู่ระบบ</button>
                     </div>
-                    <div id="galleryPhotoPreview" style="text-align: center; margin-top: 1rem;"></div>
                 </form>
-                <div class="form-actions">
-                    <button type="button" class="secondary" onclick="closeAddGalleryPhotoModal()">ยกเลิก</button>
-                    <button type="button" onclick="saveGalleryPhoto()">บันทึกรูปภาพ</button>
-                </div>
             </div>
         </div>
 
-        <!-- History Modal -->
-        <div id="historyModal" class="modal">
+        <!-- Admin Settings Modal -->
+        <div id="adminSettingsModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>ประวัติการใช้งาน</h3>
-                    <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+                    <h3>การตั้งค่าผู้ดูแลระบบ</h3>
+                    <button class="modal-close" onclick="closeAdminSettingsModal()">&times;</button>
                 </div>
-                <div id="historyContent">
-                    <!-- History items will be listed here -->
-                </div>
-                <div class="form-actions">
-                    <button onclick="clearHistory()" style="background: #ff4444;">
-                        <i class="fas fa-trash"></i> ล้างประวัติ
+                <form id="adminSettingsForm">
+                    <div class="form-group">
+                        <label for="currentPassword">รหัสผ่านปัจจุบัน</label>
+                        <input type="password" id="currentPassword" required placeholder="กรอกรหัสผ่านปัจจุบัน">
+                    </div>
+                    <div class="form-group">
+                        <label for="newUsername">ชื่อผู้ใช้ใหม่</label>
+                        <input type="text" id="newUsername" placeholder="กรอกชื่อผู้ใช้ใหม่">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">รหัสผ่านใหม่</label>
+                        <input type="password" id="newPassword" placeholder="กรอกรหัสผ่านใหม่">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">ยืนยันรหัสผ่านใหม่</label>
+                        <input type="password" id="confirmPassword" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="secondary" onclick="closeAdminSettingsModal()">ยกเลิก</button>
+                        <button type="submit">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
+                </form>
+                
+                <div class="backup-controls">
+                    <button class="backup-btn" onclick="backupData()">
+                        <i class="fas fa-download"></i> สำรองข้อมูล
+                    </button>
+                    <label for="restoreFile" class="backup-btn" style="cursor: pointer;">
+                        <i class="fas fa-upload"></i> กู้คืนข้อมูล
+                        <input type="file" id="restoreFile" accept=".json" style="display: none;" onchange="restoreData(event)">
+                    </label>
+                    <button class="reset-btn" onclick="resetData()">
+                        <i class="fas fa-trash"></i> รีเซ็ตข้อมูลทั้งหมด
                     </button>
                 </div>
             </div>
@@ -1202,7 +1314,6 @@
                 <button class="zoom-btn" onclick="fullscreenResetZoom()"><i class="fas fa-sync-alt"></i></button>
                 <button class="zoom-btn" onclick="toggleFullscreenInfo()"><i class="fas fa-info"></i></button>
             </div>
-            <div class="drag-info" id="fullscreenDragInfo">ลากเมาส์เพื่อขยับรูปภาพ</div>
         </div>
     </div>
 
@@ -1214,15 +1325,17 @@
         (function() {
             'use strict';
 
-            // ข้อมูลตัวอย่าง - พร้อมระบบจัดการแกลเลอรี
+            // ข้อมูลตัวอย่าง - พร้อมระบบจัดการอัลบั้ม
             let data = {
                 "categories": {
                     "พระยอดนิยม": [
                         {
                             "name": "พระบางลำพูน",
-                            "data": "https://images.unsplash.com/photo-1586947201838-5d66c1b94a5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVkZGhhfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
-                            "createdAt": "2024-01-15T10:30:00Z",
-                            "createdBy": "ผู้ใช้"
+                            "data": "https://images.unsplash.com/photo-1586947201838-5d66c1b94a5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVkZGhhfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                        },
+                        {
+                            "name": "พระเครื่องหลวงปู่ทวด",
+                            "data": "https://images.unsplash.com/photo-1542648184-8d3abad84d0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YnVkZGhhfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                         }
                     ]
                 },
@@ -1231,38 +1344,11 @@
                         "photos": [
                             {
                                 "name": "พระกรุวัดราชบพิธ",
-                                "data": "https://images.unsplash.com/photo-1547994777-8d47e752ad49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJ1ZGRoYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
-                                "createdAt": "2024-01-16T14:20:00Z",
-                                "createdBy": "ผู้ใช้"
+                                "data": "https://images.unsplash.com/photo-1547994777-8d47e752ad49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJ1ZGRoYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
                             }
-                        ],
-                        "description": "",
-                        "createdAt": "2024-01-16T14:15:00Z",
-                        "createdBy": "ผู้ใช้"
+                        ]
                     }
-                },
-                "history": [
-                    {
-                        "type": "สร้างหมวดหมู่",
-                        "details": "สร้างหมวดหมู่ 'พระยอดนิยม'",
-                        "timestamp": "2024-01-15T10:30:00Z"
-                    },
-                    {
-                        "type": "เพิ่มรูปภาพ",
-                        "details": "เพิ่มรูปภาพ 'พระบางลำพูน' ในหมวดหมู่ 'พระยอดนิยม'",
-                        "timestamp": "2024-01-15T10:30:00Z"
-                    },
-                    {
-                        "type": "สร้างอัลบั้ม",
-                        "details": "สร้างอัลบั้ม 'พระเครื่องกรุงเทพมหานคร'",
-                        "timestamp": "2024-01-16T14:15:00Z"
-                    },
-                    {
-                        "type": "เพิ่มรูปภาพ",
-                        "details": "เพิ่มรูปภาพ 'พระกรุวัดราชบพิธ' ในอัลบั้ม 'พระเครื่องกรุงเทพมหานคร'",
-                        "timestamp": "2024-01-16T14:20:00Z"
-                    }
-                ]
+                }
             };
 
             // ตัวแปร global
@@ -1274,7 +1360,6 @@
             const albumModalContent = document.getElementById('albumModalContent');
             const tabGallery = document.getElementById('tabGallery');
             const tabAlbums = document.getElementById('tabAlbums');
-            const tabHistory = document.getElementById('tabHistory');
             const imageModal = document.getElementById('imageModal');
             const modalImageTitle = document.getElementById('modalImageTitle');
             const imageModalContent = document.getElementById('imageModalContent');
@@ -1287,14 +1372,21 @@
             const addPhotosModal = document.getElementById('addPhotosModal');
             const addPhotosTitle = document.getElementById('addPhotosTitle');
             const uploadedFiles = document.getElementById('uploadedFiles');
-            const addGalleryPhotoModal = document.getElementById('addGalleryPhotoModal');
-            const addGalleryPhotoForm = document.getElementById('addGalleryPhotoForm');
-            const galleryPhotoPreview = document.getElementById('galleryPhotoPreview');
-            const historyModal = document.getElementById('historyModal');
-            const historyContent = document.getElementById('historyContent');
-            const volumeBtn = document.getElementById('volumeBtn');
-            const dragInfo = document.getElementById('dragInfo');
-            const fullscreenDragInfo = document.getElementById('fullscreenDragInfo');
+            const adminLoginModal = document.getElementById('adminLoginModal');
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            const adminSettingsModal = document.getElementById('adminSettingsModal');
+            const adminSettingsForm = document.getElementById('adminSettingsForm');
+            const adminIndicator = document.getElementById('adminIndicator');
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminSettingsBtn = document.getElementById('adminSettingsBtn');
+            const addAlbumBtn = document.getElementById('addAlbumBtn');
+            const albumActions = document.getElementById('albumActions');
+            const readonlyOverlay = document.getElementById('readonlyOverlay');
+            const localFilesList = document.getElementById('localFilesList');
+            const storageUsed = document.getElementById('storageUsed');
+            const storageTotal = document.getElementById('storageTotal');
+            const storageBar = document.getElementById('storageBar');
 
             let currentTab = 'gallery';
             let currentImages = [];
@@ -1304,209 +1396,52 @@
             let showFullscreenInfo = true;
             let currentAlbumName = '';
             let selectedFiles = [];
-            let selectedGalleryPhoto = null;
-            let isMuted = false;
-            let speechSynthesis = window.speechSynthesis;
+            let isAdmin = false;
+            let localImages = [];
 
-            // ตัวแปรสำหรับการลากเม้าขยับรูป
-            let currentTranslateX = 0, currentTranslateY = 0;
-            let fullscreenCurrentTranslateX = 0, fullscreenCurrentTranslateY = 0;
-
-            // ระบบเสียงพูด
-            function playWelcomeMessage() {
-                if (isMuted) return;
+            // ข้อมูลผู้ดูแลระบบ - เก็บใน localStorage ของเครื่องผู้ใช้
+            function getAdminCredentials() {
+                // ตรวจสอบว่ามีข้อมูลใน localStorage หรือไม่
+                const savedCredentials = localStorage.getItem('bptAdminCredentials');
                 
-                const welcomeText = "ยินดีต้อนรับสู่แหล่งแหล่งการเรียนรู้พระเครื่องแดนสยาม";
-                speakText(welcomeText);
-            }
-
-            function speakText(text) {
-                if (isMuted || !speechSynthesis) return;
-                
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'th-TH';
-                utterance.rate = 0.9;
-                utterance.pitch = 1;
-                utterance.volume = 1;
-                
-                const voices = speechSynthesis.getVoices();
-                const thaiVoice = voices.find(voice => voice.lang === 'th-TH' || voice.lang.startsWith('th-'));
-                if (thaiVoice) {
-                    utterance.voice = thaiVoice;
-                }
-                
-                speechSynthesis.speak(utterance);
-            }
-
-            function toggleVolume() {
-                isMuted = !isMuted;
-                if (isMuted) {
-                    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    volumeBtn.classList.add('muted');
-                    speechSynthesis.cancel();
+                if (savedCredentials) {
+                    return JSON.parse(savedCredentials);
                 } else {
-                    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                    volumeBtn.classList.remove('muted');
+                    // ตั้งค่าผู้ดูแลระบบเริ่มต้นถ้ายังไม่มี
+                    const defaultCredentials = {
+                        username: "admin",
+                        password: "bpt2024"
+                    };
+                    // บันทึกข้อมูลเริ่มต้น
+                    localStorage.setItem('bptAdminCredentials', JSON.stringify(defaultCredentials));
+                    return defaultCredentials;
                 }
             }
 
-            // ระบบประวัติการใช้งาน
-            function addHistory(type, details) {
-                const historyItem = {
-                    type: type,
-                    details: details,
-                    timestamp: new Date().toISOString()
-                };
-                
-                data.history.unshift(historyItem);
-                
-                // จำกัดจำนวนประวัติไว้ที่ 50 รายการ
-                if (data.history.length > 50) {
-                    data.history = data.history.slice(0, 50);
+            // ฟังก์ชันเปลี่ยนรหัสผ่าน
+            function changeAdminPassword(newPassword) {
+                if (!isAdmin) {
+                    alert('กรุณาเข้าสู่ระบบเป็นผู้ดูแลก่อน');
+                    return false;
                 }
                 
-                saveToLocalStorage();
-                
-                // อ่านประวัติออกเสียง
-                if (!isMuted) {
-                    setTimeout(() => {
-                        speakText(`มีการ${type} ${details}`);
-                    }, 500);
-                }
+                const credentials = getAdminCredentials();
+                credentials.password = newPassword;
+                localStorage.setItem('bptAdminCredentials', JSON.stringify(credentials));
+                return true;
             }
 
-            function renderHistory() {
-                historyContent.innerHTML = '';
-                
-                if (data.history.length === 0) {
-                    historyContent.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i> ยังไม่มีประวัติการใช้งาน</div>';
-                    return;
+            // ฟังก์ชันเปลี่ยนชื่อผู้ใช้
+            function changeAdminUsername(newUsername) {
+                if (!isAdmin) {
+                    alert('กรุณาเข้าสู่ระบบเป็นผู้ดูแลก่อน');
+                    return false;
                 }
                 
-                data.history.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    
-                    const time = new Date(item.timestamp).toLocaleString('th-TH');
-                    
-                    historyItem.innerHTML = `
-                        <div class="history-type">${item.type}</div>
-                        <div class="history-details">${item.details}</div>
-                        <div class="history-time">${time}</div>
-                    `;
-                    
-                    historyContent.appendChild(historyItem);
-                });
-            }
-
-            function clearHistory() {
-                if (confirm('คุณต้องการล้างประวัติการใช้งานทั้งหมดใช่หรือไม่?')) {
-                    data.history = [];
-                    saveToLocalStorage();
-                    renderHistory();
-                    speakText('ล้างประวัติการใช้งานเรียบร้อยแล้ว');
-                }
-            }
-
-            // ระบบลากเม้าขยับรูปภาพ
-            function setupImageDrag(imageElement, container, isFullscreen = false) {
-                let isDraggingLocal = false;
-                let startXLocal, startYLocal;
-                let translateXLocal = isFullscreen ? fullscreenCurrentTranslateX : currentTranslateX;
-                let translateYLocal = isFullscreen ? fullscreenCurrentTranslateY : currentTranslateY;
-
-                function startDrag(e) {
-                    e.preventDefault();
-                    isDraggingLocal = true;
-                    
-                    if (e.type === 'touchstart') {
-                        startXLocal = e.touches[0].clientX - translateXLocal;
-                        startYLocal = e.touches[0].clientY - translateYLocal;
-                    } else {
-                        startXLocal = e.clientX - translateXLocal;
-                        startYLocal = e.clientY - translateYLocal;
-                    }
-                    
-                    if (isFullscreen) {
-                        fullscreenMode.classList.add('dragging');
-                        fullscreenImage.classList.add('dragging');
-                    } else {
-                        imageModalContent.classList.add('dragging');
-                        imageElement.classList.add('dragging');
-                    }
-                    
-                    // แสดงคำแนะนำการลาก
-                    if (isFullscreen) {
-                        fullscreenDragInfo.classList.add('show');
-                        setTimeout(() => fullscreenDragInfo.classList.remove('show'), 2000);
-                    } else {
-                        dragInfo.classList.add('show');
-                        setTimeout(() => dragInfo.classList.remove('show'), 2000);
-                    }
-                }
-
-                function drag(e) {
-                    if (!isDraggingLocal) return;
-                    e.preventDefault();
-
-                    let clientX, clientY;
-                    if (e.type === 'touchmove') {
-                        clientX = e.touches[0].clientX;
-                        clientY = e.touches[0].clientY;
-                    } else {
-                        clientX = e.clientX;
-                        clientY = e.clientY;
-                    }
-
-                    translateXLocal = clientX - startXLocal;
-                    translateYLocal = clientY - startYLocal;
-
-                    // จำกัดการขยับไม่ให้เกินขอบเขต
-                    const maxMove = isFullscreen ? 200 : 100;
-                    translateXLocal = Math.max(Math.min(translateXLocal, maxMove), -maxMove);
-                    translateYLocal = Math.max(Math.min(translateYLocal, maxMove), -maxMove);
-
-                    imageElement.style.transform = `scale(${isFullscreen ? fullscreenZoom : currentZoom}) translate(${translateXLocal}px, ${translateYLocal}px)`;
-                }
-
-                function endDrag() {
-                    isDraggingLocal = false;
-                    
-                    if (isFullscreen) {
-                        fullscreenMode.classList.remove('dragging');
-                        fullscreenImage.classList.remove('dragging');
-                        fullscreenCurrentTranslateX = translateXLocal;
-                        fullscreenCurrentTranslateY = translateYLocal;
-                    } else {
-                        imageModalContent.classList.remove('dragging');
-                        imageElement.classList.remove('dragging');
-                        currentTranslateX = translateXLocal;
-                        currentTranslateY = translateYLocal;
-                    }
-                }
-
-                function resetPosition() {
-                    translateXLocal = 0;
-                    translateYLocal = 0;
-                    currentTranslateX = 0;
-                    currentTranslateY = 0;
-                    fullscreenCurrentTranslateX = 0;
-                    fullscreenCurrentTranslateY = 0;
-                    
-                    imageElement.style.transform = `scale(${isFullscreen ? fullscreenZoom : currentZoom}) translate(0px, 0px)`;
-                }
-
-                // Event listeners สำหรับเมาส์
-                imageElement.addEventListener('mousedown', startDrag);
-                document.addEventListener('mousemove', drag);
-                document.addEventListener('mouseup', endDrag);
-
-                // Event listeners สำหรับทัชสกรีน
-                imageElement.addEventListener('touchstart', startDrag, { passive: false });
-                document.addEventListener('touchmove', drag, { passive: false });
-                document.addEventListener('touchend', endDrag);
-
-                return { resetPosition };
+                const credentials = getAdminCredentials();
+                credentials.username = newUsername;
+                localStorage.setItem('bptAdminCredentials', JSON.stringify(credentials));
+                return true;
             }
 
             // โหลดข้อมูลจาก localStorage ถ้ามี
@@ -1515,11 +1450,214 @@
                 if (savedData) {
                     data = JSON.parse(savedData);
                 }
+                
+                // ตรวจสอบสถานะการล็อกอิน
+                const savedAdminStatus = localStorage.getItem('bptAdminStatus');
+                if (savedAdminStatus === 'true') {
+                    isAdmin = true;
+                    updateAdminUI();
+                }
+                
+                // โหลดรูปภาพจาก Local Storage
+                loadLocalImages();
             }
 
             // บันทึกข้อมูลไปยัง localStorage
             function saveToLocalStorage() {
                 localStorage.setItem('bptAmuletsData', JSON.stringify(data));
+                updateStorageStatus();
+                alert('บันทึกข้อมูลเรียบร้อยแล้ว!');
+            }
+
+            // โหลดรูปภาพจาก Local Storage
+            function loadLocalImages() {
+                const savedImages = localStorage.getItem('bptLocalImages');
+                if (savedImages) {
+                    localImages = JSON.parse(savedImages);
+                    updateLocalFilesList();
+                    updateStorageStatus();
+                }
+            }
+
+            // บันทึกรูปภาพลง Local Storage
+            function saveLocalImages() {
+                localStorage.setItem('bptLocalImages', JSON.stringify(localImages));
+                updateStorageStatus();
+            }
+
+            // อัพเดทรายการไฟล์ในเครื่อง
+            function updateLocalFilesList() {
+                localFilesList.innerHTML = '';
+                
+                if (localImages.length === 0) {
+                    localFilesList.innerHTML = '<div style="text-align: center; padding: 1rem; color: #888;">ยังไม่มีรูปภาพที่เก็บในเครื่อง</div>';
+                    return;
+                }
+                
+                localImages.forEach((image, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'local-file-item';
+                    fileItem.innerHTML = `
+                        <div class="local-file-name">${image.name}</div>
+                        <div>
+                            <button class="album-action-btn" onclick="addLocalImageToSelection(${index})" title="เพิ่มรูปภาพ">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="album-action-btn" onclick="viewLocalImage(${index})" title="ดูรูปภาพ">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="album-action-btn" onclick="deleteLocalImage(${index})" title="ลบรูปภาพ">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    localFilesList.appendChild(fileItem);
+                });
+            }
+
+            // อัพเดทสถานะพื้นที่เก็บข้อมูล
+            function updateStorageStatus() {
+                // คำนวณขนาดข้อมูลทั้งหมดใน Local Storage
+                let totalSize = 0;
+                
+                // ขนาดของข้อมูลหลัก
+                const mainData = localStorage.getItem('bptAmuletsData');
+                if (mainData) {
+                    totalSize += new Blob([mainData]).size;
+                }
+                
+                // ขนาดของรูปภาพใน Local Storage
+                const localImagesData = localStorage.getItem('bptLocalImages');
+                if (localImagesData) {
+                    totalSize += new Blob([localImagesData]).size;
+                }
+                
+                // ขนาดของข้อมูลผู้ดูแล
+                const adminData = localStorage.getItem('bptAdminCredentials');
+                if (adminData) {
+                    totalSize += new Blob([adminData]).size;
+                }
+                
+                // ขนาดของสถานะผู้ดูแล
+                const adminStatus = localStorage.getItem('bptAdminStatus');
+                if (adminStatus) {
+                    totalSize += new Blob([adminStatus]).size;
+                }
+                
+                // แปลงเป็น MB
+                const usedMB = (totalSize / (1024 * 1024)).toFixed(2);
+                const totalMB = 5; // 5MB เป็นขีดจำกัดทั่วไปของ Local Storage
+                
+                storageUsed.textContent = usedMB;
+                storageTotal.textContent = totalMB;
+                
+                // คำนวณเปอร์เซ็นต์ที่ใช้
+                const percentage = (usedMB / totalMB) * 100;
+                storageBar.style.width = `${Math.min(percentage, 100)}%`;
+                
+                // เปลี่ยนสีถ้าใกล้เต็ม
+                if (percentage > 80) {
+                    storageBar.style.background = '#ff4444';
+                } else if (percentage > 60) {
+                    storageBar.style.background = '#ff9900';
+                } else {
+                    storageBar.style.background = '#00cc88';
+                }
+            }
+
+            // เพิ่มรูปภาพจาก Local Storage ไปยังรายการที่เลือก
+            function addLocalImageToSelection(index) {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
+                const image = localImages[index];
+                selectedFiles.push({
+                    name: image.name,
+                    data: image.data
+                });
+                updateUploadedFilesList();
+                alert(`เพิ่มรูปภาพ "${image.name}" เรียบร้อยแล้ว`);
+            }
+
+            // ดูรูปภาพจาก Local Storage
+            function viewLocalImage(index) {
+                const image = localImages[index];
+                viewImage(image.data, image.name, [image]);
+            }
+
+            // ลบรูปภาพจาก Local Storage
+            function deleteLocalImage(index) {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
+                if (confirm(`คุณต้องการลบรูปภาพ "${localImages[index].name}" ใช่หรือไม่?`)) {
+                    localImages.splice(index, 1);
+                    saveLocalImages();
+                    updateLocalFilesList();
+                    alert('ลบรูปภาพเรียบร้อยแล้ว');
+                }
+            }
+
+            // ล้างข้อมูลทั้งหมดใน Local Storage
+            function clearLocalStorage() {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
+                if (confirm('คุณต้องการล้างข้อมูลทั้งหมดในเครื่องใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้')) {
+                    localStorage.removeItem('bptLocalImages');
+                    localImages = [];
+                    updateLocalFilesList();
+                    updateStorageStatus();
+                    alert('ล้างข้อมูลเรียบร้อยแล้ว');
+                }
+            }
+
+            // บันทึกรูปภาพที่เลือกลง Local Storage
+            function saveSelectedToLocalStorage() {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
+                if (selectedFiles.length === 0) {
+                    alert('กรุณาเลือกรูปภาพก่อน');
+                    return;
+                }
+                
+                // ตรวจสอบพื้นที่ก่อนบันทึก
+                updateStorageStatus();
+                const usedMB = parseFloat(storageUsed.textContent);
+                if (usedMB > 4.5) {
+                    alert('พื้นที่เกือบเต็มแล้ว กรุณาลบรูปภาพบางส่วนออกก่อน');
+                    return;
+                }
+                
+                selectedFiles.forEach(file => {
+                    // ตรวจสอบว่ามีไฟล์นี้อยู่แล้วหรือไม่
+                    const existingIndex = localImages.findIndex(img => img.name === file.name);
+                    if (existingIndex === -1) {
+                        localImages.push({
+                            name: file.name,
+                            data: file.data
+                        });
+                    } else {
+                        // ถ้ามีอยู่แล้ว ให้อัพเดท
+                        localImages[existingIndex] = {
+                            name: file.name,
+                            data: file.data
+                        };
+                    }
+                });
+                
+                saveLocalImages();
+                updateLocalFilesList();
+                alert(`บันทึกรูปภาพ ${selectedFiles.length} รูปลงเครื่องเรียบร้อยแล้ว`);
             }
 
             function loadData(){
@@ -1527,11 +1665,6 @@
                     loadFromLocalStorage();
                     loadCategories();
                     render();
-                    
-                    setTimeout(() => {
-                        playWelcomeMessage();
-                    }, 1000);
-                    
                 } catch(e){
                     console.error('ไม่สามารถโหลดข้อมูลได้:', e);
                     gallery.innerHTML='<p style="text-align:center;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
@@ -1547,20 +1680,12 @@
                 let hasResults = false;
                 
                 cats.forEach(cat=>{
-                    data.categories[cat].forEach((photo, index)=>{
+                    data.categories[cat].forEach(photo=>{
                         if(search && !photo.name.toLowerCase().includes(search) && !cat.toLowerCase().includes(search)) return;
                         hasResults = true;
                         const div = document.createElement('div'); 
                         div.className='photo';
                         div.innerHTML=`
-                            <div class="photo-actions">
-                                <button class="photo-action-btn" onclick="event.stopPropagation(); speakText('${photo.name}')" title="อ่านชื่อรูปภาพ">
-                                    <i class="fas fa-volume-up"></i>
-                                </button>
-                                <button class="photo-action-btn delete" onclick="event.stopPropagation(); deleteGalleryPhoto('${cat}', ${index})" title="ลบรูปภาพ">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
                             <img src="${photo.data}" alt="${photo.name}" loading="lazy">
                             <div class="photo-name">${photo.name}</div>
                         `;
@@ -1614,6 +1739,7 @@
                         <div class="album-info">
                             <div class="album-name">${name}</div>
                             <div class="album-count">${albumPhotos.length} รูป</div>
+                            ${isAdmin ? `
                             <div class="album-actions">
                                 <button class="album-action-btn" onclick="event.stopPropagation(); editAlbum('${name}')">
                                     <i class="fas fa-edit"></i>
@@ -1622,6 +1748,7 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
+                            ` : ''}
                         </div>`;
                     gallery.appendChild(card);
                 });
@@ -1631,29 +1758,27 @@
                 }
             }
 
-            function renderHistoryView() {
-                gallery.innerHTML = '';
-                renderHistory();
-            }
-
             function render(){
                 if(currentTab==='gallery'){
                     catSelect.style.display='inline-block';
                     renderGallery();
-                } else if(currentTab==='albums') {
+                } else {
                     catSelect.style.display='none';
                     renderAlbums();
-                } else if(currentTab==='history') {
-                    catSelect.style.display='none';
-                    renderHistoryView();
+                }
+                
+                // ซ่อนปุ่มสำหรับผู้ใช้ทั่วไป
+                if (!isAdmin) {
+                    addAlbumBtn.style.display = 'none';
+                    adminSettingsBtn.style.display = 'none';
+                } else {
+                    addAlbumBtn.style.display = 'flex';
+                    adminSettingsBtn.style.display = 'block';
                 }
             }
 
             function loadCategories(){ 
                 catSelect.innerHTML='';
-                const galleryCategorySelect = document.getElementById('galleryPhotoCategory');
-                galleryCategorySelect.innerHTML = '<option value="">เลือกหมวดหมู่</option>';
-                
                 const keys=Object.keys(data.categories||{});
                 if(keys.length===0){ 
                     const opt=document.createElement('option'); 
@@ -1674,114 +1799,68 @@
                         opt.value=k; 
                         opt.textContent=k; 
                         catSelect.appendChild(opt);
-                        
-                        const galleryOpt = document.createElement('option');
-                        galleryOpt.value = k;
-                        galleryOpt.textContent = k;
-                        galleryCategorySelect.appendChild(galleryOpt);
                     });
                 }
             }
 
-            // ระบบจัดการแกลเลอรี
-            function showAddGalleryPhotoModal() {
-                addGalleryPhotoForm.reset();
-                galleryPhotoPreview.innerHTML = '';
-                selectedGalleryPhoto = null;
-                addGalleryPhotoModal.style.display = 'flex';
+            function viewAlbumByName(name){
+                currentAlbumName = name;
+                modalAlbumTitle.textContent=name; 
+                albumModalContent.innerHTML='';
+                const photos=data.albums[name]?.photos||[];
+                
+                if(photos.length===0) {
+                    albumModalContent.innerHTML=`
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="far fa-folder-open" style="font-size: 4rem; color: #666; margin-bottom: 1rem;"></i>
+                            <p style="color: #ccc; font-size: 1.1rem;">อัลบั้มนี้ยังไม่มีรูปภาพ</p>
+                            <p style="color: #888; margin-top: 0.5rem;">เพิ่มรูปภาพแรกของคุณในอัลบั้ม "${name}"</p>
+                        </div>
+                    `;
+                } else {
+                    const grid = document.createElement('div');
+                    grid.className = 'album-photo-grid';
+                    
+                    photos.forEach((p, index)=>{
+                        const item = document.createElement('div');
+                        item.className = 'album-photo-item';
+                        item.innerHTML = `
+                            ${isAdmin ? `
+                            <button class="delete-photo-btn" onclick="deletePhotoFromAlbum('${name}', ${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            ` : ''}
+                            <img src="${p.data}" alt="${p.name}" loading="lazy">
+                            <div class="album-photo-name">${p.name}</div>
+                        `;
+                        item.addEventListener('click', (e) => {
+                            if (!e.target.classList.contains('delete-photo-btn')) {
+                                viewImage(p.data, p.name, photos);
+                            }
+                        });
+                        grid.appendChild(item);
+                    });
+                    
+                    albumModalContent.appendChild(grid);
+                }
+                
+                // ซ่อนปุ่มจัดการสำหรับผู้ใช้ทั่วไป
+                if (!isAdmin) {
+                    albumActions.style.display = 'none';
+                } else {
+                    albumActions.style.display = 'flex';
+                }
+                
+                albumModal.style.display='flex';
                 document.body.style.overflow = 'hidden';
             }
 
-            function closeAddGalleryPhotoModal() {
-                addGalleryPhotoModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-
-            function handleGalleryPhotoSelect(files) {
-                if (files.length > 0) {
-                    const file = files[0];
-                    if (file.type.match('image.*')) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            selectedGalleryPhoto = {
-                                name: file.name,
-                                data: e.target.result
-                            };
-                            
-                            galleryPhotoPreview.innerHTML = `
-                                <img src="${e.target.result}" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
-                                <p style="margin-top: 10px; color: #ccc;">${file.name}</p>
-                            `;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                }
-            }
-
-            function saveGalleryPhoto() {
-                const photoName = document.getElementById('galleryPhotoName').value.trim();
-                const category = document.getElementById('galleryPhotoCategory').value;
-                
-                if (!photoName) {
-                    alert('กรุณากรอกชื่อรูปภาพ');
-                    return;
-                }
-                
-                if (!category) {
-                    alert('กรุณาเลือกหมวดหมู่');
-                    return;
-                }
-                
-                if (!selectedGalleryPhoto) {
-                    alert('กรุณาเลือกรูปภาพ');
-                    return;
-                }
-
-                // สร้างหมวดหมู่ใหม่ถ้ายังไม่มี
-                if (!data.categories[category]) {
-                    data.categories[category] = [];
-                    addHistory('สร้างหมวดหมู่', `สร้างหมวดหมู่ '${category}'`);
-                }
-
-                // เพิ่มรูปภาพในหมวดหมู่
-                const newPhoto = {
-                    name: photoName,
-                    data: selectedGalleryPhoto.data,
-                    createdAt: new Date().toISOString(),
-                    createdBy: 'ผู้ใช้'
-                };
-                
-                data.categories[category].push(newPhoto);
-                saveToLocalStorage();
-                
-                addHistory('เพิ่มรูปภาพ', `เพิ่มรูปภาพ '${photoName}' ในหมวดหมู่ '${category}'`);
-                
-                closeAddGalleryPhotoModal();
-                render();
-                
-                speakText(`เพิ่มรูปภาพ ${photoName} ในหมวดหมู่ ${category} เรียบร้อยแล้ว`);
-            }
-
-            function deleteGalleryPhoto(category, index) {
-                const photo = data.categories[category][index];
-                if (confirm(`คุณต้องการลบรูปภาพ "${photo.name}" ใช่หรือไม่?`)) {
-                    data.categories[category].splice(index, 1);
-                    
-                    // ลบหมวดหมู่ถ้าไม่มีรูปภาพแล้ว
-                    if (data.categories[category].length === 0) {
-                        delete data.categories[category];
-                    }
-                    
-                    saveToLocalStorage();
-                    addHistory('ลบรูปภาพ', `ลบรูปภาพ '${photo.name}' จากหมวดหมู่ '${category}'`);
-                    render();
-                    
-                    speakText(`ลบรูปภาพ ${photo.name} เรียบร้อยแล้ว`);
-                }
-            }
-
-            // ระบบจัดการอัลบั้ม (เก็บฟังก์ชันเดิม)
+            // ระบบจัดการอัลบั้ม
             function showCreateAlbumModal() {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
                 createAlbumForm.reset();
                 createAlbumModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
@@ -1793,11 +1872,18 @@
             }
 
             function showAddPhotosModal() {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
                 addPhotosTitle.textContent = `เพิ่มรูปภาพในอัลบั้ม "${currentAlbumName}"`;
                 uploadedFiles.innerHTML = '';
                 selectedFiles = [];
                 addPhotosModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
+                
+                // โหลดข้อมูล Local Storage
+                loadLocalImages();
             }
 
             function closeAddPhotosModal() {
@@ -1806,6 +1892,10 @@
             }
 
             function handleFileSelect(files) {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     if (file.type.match('image.*')) {
@@ -1840,12 +1930,21 @@
             }
 
             function removeSelectedFile(index) {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
                 selectedFiles.splice(index, 1);
                 updateUploadedFilesList();
             }
 
             function createNewAlbum(event) {
                 event.preventDefault();
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
                 const albumName = document.getElementById('albumName').value.trim();
                 const albumDescription = document.getElementById('albumDescription').value.trim();
 
@@ -1859,71 +1958,68 @@
                     return;
                 }
 
+                // สร้างอัลบั้มใหม่
                 data.albums[albumName] = {
                     description: albumDescription,
-                    photos: [],
-                    createdAt: new Date().toISOString(),
-                    createdBy: 'ผู้ใช้'
+                    photos: []
                 };
 
                 saveToLocalStorage();
-                addHistory('สร้างอัลบั้ม', `สร้างอัลบั้ม '${albumName}'`);
-                
                 closeCreateAlbumModal();
                 render();
-                
-                speakText(`สร้างอัลบั้ม ${albumName} เรียบร้อยแล้ว`);
+                alert(`สร้างอัลบั้ม "${albumName}" สำเร็จ!`);
             }
 
             function savePhotosToAlbum() {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
                 if (selectedFiles.length === 0) {
                     alert('กรุณาเลือกรูปภาพก่อน');
                     return;
                 }
 
                 selectedFiles.forEach(file => {
-                    const newPhoto = {
+                    data.albums[currentAlbumName].photos.push({
                         name: file.name,
-                        data: file.data,
-                        createdAt: new Date().toISOString(),
-                        createdBy: 'ผู้ใช้'
-                    };
-                    
-                    data.albums[currentAlbumName].photos.push(newPhoto);
+                        data: file.data
+                    });
                 });
 
                 saveToLocalStorage();
-                addHistory('เพิ่มรูปภาพ', `เพิ่มรูปภาพ ${selectedFiles.length} รูปในอัลบั้ม '${currentAlbumName}'`);
-                
                 closeAddPhotosModal();
-                viewAlbumByName(currentAlbumName);
-                
-                speakText(`เพิ่มรูปภาพ ${selectedFiles.length} รูปในอัลบั้ม ${currentAlbumName} เรียบร้อยแล้ว`);
+                viewAlbumByName(currentAlbumName); // รีเฟรชการแสดงผล
+                alert(`เพิ่มรูปภาพ ${selectedFiles.length} รูปในอัลบั้ม "${currentAlbumName}" สำเร็จ!`);
             }
 
             function deletePhotoFromAlbum(albumName, photoIndex) {
-                const photo = data.albums[albumName].photos[photoIndex];
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
                 if (confirm('คุณต้องการลบรูปภาพนี้ใช่หรือไม่?')) {
                     data.albums[albumName].photos.splice(photoIndex, 1);
                     saveToLocalStorage();
-                    addHistory('ลบรูปภาพ', `ลบรูปภาพ '${photo.name}' จากอัลบั้ม '${albumName}'`);
-                    viewAlbumByName(albumName);
-                    
-                    speakText(`ลบรูปภาพ ${photo.name} เรียบร้อยแล้ว`);
+                    viewAlbumByName(albumName); // รีเฟรชการแสดงผล
                 }
             }
 
             function deleteAlbum(albumName) {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
                 if (confirm(`คุณต้องการลบอัลบั้ม "${albumName}" ใช่หรือไม่?`)) {
                     delete data.albums[albumName];
                     saveToLocalStorage();
-                    addHistory('ลบอัลบั้ม', `ลบอัลบั้ม '${albumName}'`);
                     render();
                     if (albumModal.style.display === 'flex' && currentAlbumName === albumName) {
                         closeAlbumModal();
                     }
-                    
-                    speakText(`ลบอัลบั้ม ${albumName} เรียบร้อยแล้ว`);
                 }
             }
 
@@ -1932,6 +2028,11 @@
             }
 
             function editAlbum(albumName) {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                
                 const newName = prompt('กรอกชื่ออัลบั้มใหม่:', albumName);
                 if (newName && newName.trim() && newName !== albumName) {
                     if (data.albums[newName]) {
@@ -1941,74 +2042,210 @@
                     data.albums[newName] = data.albums[albumName];
                     delete data.albums[albumName];
                     saveToLocalStorage();
-                    addHistory('แก้ไขอัลบั้ม', `แก้ไขชื่ออัลบั้มจาก '${albumName}' เป็น '${newName}'`);
                     render();
                     if (albumModal.style.display === 'flex' && currentAlbumName === albumName) {
                         closeAlbumModal();
                     }
-                    
-                    speakText(`แก้ไขชื่ออัลบั้มเป็น ${newName} เรียบร้อยแล้ว`);
                 }
             }
 
-            function viewAlbumByName(name){
-                currentAlbumName = name;
-                modalAlbumTitle.textContent=name; 
-                albumModalContent.innerHTML='';
-                const photos=data.albums[name]?.photos||[];
-                
-                if(photos.length===0) {
-                    albumModalContent.innerHTML=`
-                        <div style="text-align: center; padding: 2rem;">
-                            <i class="far fa-folder-open" style="font-size: 4rem; color: #666; margin-bottom: 1rem;"></i>
-                            <p style="color: #ccc; font-size: 1.1rem;">อัลบั้มนี้ยังไม่มีรูปภาพ</p>
-                            <p style="color: #888; margin-top: 0.5rem;">เพิ่มรูปภาพแรกของคุณในอัลบั้ม "${name}"</p>
-                        </div>
-                    `;
-                } else {
-                    const grid = document.createElement('div');
-                    grid.className = 'album-photo-grid';
-                    
-                    photos.forEach((p, index)=>{
-                        const item = document.createElement('div');
-                        item.className = 'album-photo-item';
-                        item.innerHTML = `
-                            <button class="delete-photo-btn" onclick="deletePhotoFromAlbum('${name}', ${index})">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <img src="${p.data}" alt="${p.name}" loading="lazy">
-                            <div class="album-photo-name">${p.name}</div>
-                        `;
-                        item.addEventListener('click', (e) => {
-                            if (!e.target.classList.contains('delete-photo-btn')) {
-                                viewImage(p.data, p.name, photos);
-                            }
-                        });
-                        grid.appendChild(item);
-                    });
-                    
-                    albumModalContent.appendChild(grid);
-                }
-                
-                albumModal.style.display='flex';
+            // ระบบจัดการผู้ดูแล
+            function showAdminLogin() {
+                adminLoginForm.reset();
+                adminLoginModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
 
-            // ฟังก์ชันแสดงประวัติ
-            function showHistoryModal() {
-                renderHistory();
-                historyModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeHistoryModal() {
-                historyModal.style.display = 'none';
+            function closeAdminLoginModal() {
+                adminLoginModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
 
-            // ส่วนที่เหลือของฟังก์ชัน (viewImage, zoom, fullscreen, ฯลฯ)
-            // ... (เก็บฟังก์ชันเดิมทั้งหมดไว้)
+            function showAdminSettingsModal() {
+                if (!isAdmin) {
+                    showReadonlyMessage();
+                    return;
+                }
+                adminSettingsForm.reset();
+                adminSettingsModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
 
+            function closeAdminSettingsModal() {
+                adminSettingsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            function adminLogin(event) {
+                event.preventDefault();
+                const username = document.getElementById('adminUsername').value;
+                const password = document.getElementById('adminPassword').value;
+                
+                const credentials = getAdminCredentials();
+                
+                if (username === credentials.username && password === credentials.password) {
+                    isAdmin = true;
+                    localStorage.setItem('bptAdminStatus', 'true');
+                    updateAdminUI();
+                    closeAdminLoginModal();
+                    alert('เข้าสู่ระบบผู้ดูแลสำเร็จ!');
+                } else {
+                    alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+                }
+            }
+
+            function saveAdminSettings(event) {
+                event.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newUsername = document.getElementById('newUsername').value.trim();
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                const credentials = getAdminCredentials();
+                
+                // ตรวจสอบรหัสผ่านปัจจุบัน
+                if (currentPassword !== credentials.password) {
+                    alert('รหัสผ่านปัจจุบันไม่ถูกต้อง');
+                    return;
+                }
+                
+                let changesMade = false;
+                
+                // เปลี่ยนชื่อผู้ใช้ถ้ามีการกรอก
+                if (newUsername && newUsername !== credentials.username) {
+                    if (changeAdminUsername(newUsername)) {
+                        changesMade = true;
+                    }
+                }
+                
+                // เปลี่ยนรหัสผ่านถ้ามีการกรอก
+                if (newPassword) {
+                    if (newPassword !== confirmPassword) {
+                        alert('รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน');
+                        return;
+                    }
+                    if (changeAdminPassword(newPassword)) {
+                        changesMade = true;
+                    }
+                }
+                
+                if (changesMade) {
+                    alert('บันทึกการตั้งค่าเรียบร้อยแล้ว');
+                    closeAdminSettingsModal();
+                } else {
+                    alert('ไม่มีการเปลี่ยนแปลงใดๆ');
+                }
+            }
+
+            function adminLogout() {
+                isAdmin = false;
+                localStorage.setItem('bptAdminStatus', 'false');
+                updateAdminUI();
+                alert('ออกจากระบบผู้ดูแลสำเร็จ');
+            }
+
+            function updateAdminUI() {
+                if (isAdmin) {
+                    adminIndicator.style.display = 'block';
+                    loginBtn.style.display = 'none';
+                    logoutBtn.style.display = 'block';
+                    adminSettingsBtn.style.display = 'block';
+                    addAlbumBtn.style.display = 'flex';
+                    readonlyOverlay.style.display = 'none';
+                } else {
+                    adminIndicator.style.display = 'none';
+                    loginBtn.style.display = 'block';
+                    logoutBtn.style.display = 'none';
+                    adminSettingsBtn.style.display = 'none';
+                    addAlbumBtn.style.display = 'none';
+                    
+                    // แสดงข้อความโหมดดูอย่างเดียวเมื่อไม่ได้ล็อกอิน
+                    if (window.innerWidth > 768) {
+                        readonlyOverlay.style.display = 'flex';
+                    }
+                }
+                render();
+            }
+
+            function showReadonlyMessage() {
+                alert('คุณไม่มีสิทธิ์แก้ไขข้อมูลนี้ กรุณาเข้าสู่ระบบในฐานะผู้ดูแลระบบ');
+            }
+
+            // ฟังก์ชันสำรองข้อมูล
+            function backupData() {
+                const backupData = {
+                    categories: data.categories,
+                    albums: data.albums,
+                    localImages: localImages,
+                    backupDate: new Date().toISOString()
+                };
+                
+                const dataStr = JSON.stringify(backupData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const url = URL.createObjectURL(dataBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `bpt-amulets-backup-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('สำรองข้อมูลเรียบร้อยแล้ว');
+            }
+
+            // ฟังก์ชันกู้คืนข้อมูล
+            function restoreData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const backupData = JSON.parse(e.target.result);
+                        
+                        if (confirm('คุณต้องการกู้คืนข้อมูลจากไฟล์นี้ใช่หรือไม่? การกระทำนี้จะเขียนทับข้อมูลปัจจุบัน')) {
+                            data.categories = backupData.categories || {};
+                            data.albums = backupData.albums || {};
+                            localImages = backupData.localImages || [];
+                            
+                            saveToLocalStorage();
+                            saveLocalImages();
+                            render();
+                            alert('กู้คืนข้อมูลเรียบร้อยแล้ว');
+                        }
+                    } catch (error) {
+                        alert('ไฟล์ไม่ถูกต้องหรือเสียหาย');
+                    }
+                };
+                reader.readAsText(file);
+                
+                // รีเซ็ต input file
+                event.target.value = '';
+            }
+
+            // ฟังก์ชันรีเซ็ตข้อมูล
+            function resetData() {
+                if (confirm('คุณต้องการรีเซ็ตข้อมูลทั้งหมดใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้')) {
+                    if (confirm('⚠️ คำเตือน: คุณกำลังจะลบข้อมูลทั้งหมด รวมถึงอัลบั้มและรูปภาพทั้งหมด')) {
+                        localStorage.removeItem('bptAmuletsData');
+                        localStorage.removeItem('bptLocalImages');
+                        data = {
+                            categories: {},
+                            albums: {}
+                        };
+                        localImages = [];
+                        saveToLocalStorage();
+                        saveLocalImages();
+                        render();
+                        alert('รีเซ็ตข้อมูลเรียบร้อยแล้ว');
+                    }
+                }
+            }
+
+            // ส่วนที่เหลือของฟังก์ชัน (viewImage, zoom, fullscreen, ฯลฯ)
             function viewImage(src, title, images) {
                 currentImages = images || [{data: src, name: title}];
                 currentImageIndex = currentImages.findIndex(img => img.data === src);
@@ -2018,14 +2255,6 @@
                 imageModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
                 resetZoom();
-                resetImagePosition();
-                
-                // อ่านชื่อรูปภาพออกเสียง
-                if (!isMuted) {
-                    setTimeout(() => {
-                        speakText(`รูปภาพ ${title}`);
-                    }, 500);
-                }
             }
 
             function updateImageDisplay() {
@@ -2047,22 +2276,15 @@
                         <button class="zoom-btn" onclick="zoomIn()">+</button>
                         <button class="zoom-btn" onclick="resetZoom()"><i class="fas fa-sync-alt"></i></button>
                         <button class="zoom-btn" onclick="enterFullscreen()"><i class="fas fa-expand"></i></button>
-                        <button class="zoom-btn" onclick="speakText('${currentImage.name}')" title="อ่านชื่อรูปภาพ">
-                            <i class="fas fa-volume-up"></i>
-                        </button>
                     </div>
                     <img class="zoomable-image" 
                          src="${currentImage.data}" 
                          alt="${currentImage.name}" 
-                         style="transform: scale(${currentZoom}) translate(${currentTranslateX}px, ${currentTranslateY}px);"
+                         style="transform: scale(${currentZoom});"
                          onclick="toggleZoom()">
-                    <div class="drag-info" id="dragInfo">ลากเมาส์เพื่อขยับรูปภาพ</div>
                 `;
                 
                 const zoomableImage = imageModalContent.querySelector('.zoomable-image');
-                const newDragInfo = imageModalContent.querySelector('#dragInfo');
-                
-                setupImageDrag(zoomableImage, imageModalContent, false);
                 zoomableImage.addEventListener('wheel', handleImageZoom);
             }
 
@@ -2093,7 +2315,6 @@
             function resetZoom() {
                 currentZoom = 1;
                 updateZoom();
-                resetImagePosition();
             }
 
             function toggleZoom() {
@@ -2103,24 +2324,14 @@
                     currentZoom = 1;
                 }
                 updateZoom();
-                resetImagePosition();
             }
 
             function updateZoom() {
                 const zoomableImage = imageModalContent.querySelector('.zoomable-image');
                 const zoomLevel = imageModalContent.querySelector('.zoom-level');
                 if (zoomableImage && zoomLevel) {
-                    zoomableImage.style.transform = `scale(${currentZoom}) translate(${currentTranslateX}px, ${currentTranslateY}px)`;
+                    zoomableImage.style.transform = `scale(${currentZoom})`;
                     zoomLevel.textContent = `${Math.round(currentZoom * 100)}%`;
-                }
-            }
-
-            function resetImagePosition() {
-                currentTranslateX = 0;
-                currentTranslateY = 0;
-                const zoomableImage = imageModalContent.querySelector('.zoomable-image');
-                if (zoomableImage) {
-                    zoomableImage.style.transform = `scale(${currentZoom}) translate(0px, 0px)`;
                 }
             }
 
@@ -2129,7 +2340,6 @@
                     currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
                     updateImageDisplay();
                     resetZoom();
-                    resetImagePosition();
                 }
             }
 
@@ -2138,7 +2348,6 @@
                     currentImageIndex = (currentImageIndex + 1) % currentImages.length;
                     updateImageDisplay();
                     resetZoom();
-                    resetImagePosition();
                 }
             }
 
@@ -2153,11 +2362,6 @@
                 fullscreenMode.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
                 
-                fullscreenCurrentTranslateX = 0;
-                fullscreenCurrentTranslateY = 0;
-                fullscreenImage.style.transform = `scale(${fullscreenZoom}) translate(0px, 0px)`;
-                
-                setupImageDrag(fullscreenImage, fullscreenMode, true);
                 updateFullscreenZoom();
             }
 
@@ -2173,7 +2377,6 @@
                     fullscreenImage.src = currentImage.data;
                     fullscreenCounter.textContent = `${currentImageIndex + 1}/${currentImages.length}`;
                     fullscreenResetZoom();
-                    fullscreenResetPosition();
                 }
             }
 
@@ -2184,7 +2387,6 @@
                     fullscreenImage.src = currentImage.data;
                     fullscreenCounter.textContent = `${currentImageIndex + 1}/${currentImages.length}`;
                     fullscreenResetZoom();
-                    fullscreenResetPosition();
                 }
             }
 
@@ -2205,11 +2407,10 @@
             function fullscreenResetZoom() {
                 fullscreenZoom = 1;
                 updateFullscreenZoom();
-                fullscreenResetPosition();
             }
 
             function updateFullscreenZoom() {
-                fullscreenImage.style.transform = `scale(${fullscreenZoom}) translate(${fullscreenCurrentTranslateX}px, ${fullscreenCurrentTranslateY}px)`;
+                fullscreenImage.style.transform = `scale(${fullscreenZoom})`;
                 fullscreenZoomLevel.textContent = `${Math.round(fullscreenZoom * 100)}%`;
             }
 
@@ -2237,7 +2438,6 @@
             window.closeImageModal = function(){ 
                 imageModal.style.display='none'; 
                 document.body.style.overflow = 'auto';
-                resetImagePosition();
             };
 
             window.zoomIn = zoomIn;
@@ -2254,35 +2454,38 @@
             window.fullscreenZoomOut = fullscreenZoomOut;
             window.fullscreenResetZoom = fullscreenResetZoom;
             window.toggleFullscreenInfo = toggleFullscreenInfo;
-            window.resetImagePosition = resetImagePosition;
 
-            // ฟังก์ชันจัดการแกลเลอรี
+            // ฟังก์ชันจัดการอัลบั้ม
             window.showCreateAlbumModal = showCreateAlbumModal;
             window.closeCreateAlbumModal = closeCreateAlbumModal;
             window.showAddPhotosModal = showAddPhotosModal;
             window.closeAddPhotosModal = closeAddPhotosModal;
-            window.showAddGalleryPhotoModal = showAddGalleryPhotoModal;
-            window.closeAddGalleryPhotoModal = closeAddGalleryPhotoModal;
             window.handleFileSelect = handleFileSelect;
-            window.handleGalleryPhotoSelect = handleGalleryPhotoSelect;
             window.removeSelectedFile = removeSelectedFile;
             window.savePhotosToAlbum = savePhotosToAlbum;
-            window.saveGalleryPhoto = saveGalleryPhoto;
             window.deletePhotoFromAlbum = deletePhotoFromAlbum;
-            window.deleteGalleryPhoto = deleteGalleryPhoto;
             window.deleteAlbum = deleteAlbum;
             window.deleteCurrentAlbum = deleteCurrentAlbum;
             window.editAlbum = editAlbum;
 
-            // ฟังก์ชันเสียง
-            window.playWelcomeMessage = playWelcomeMessage;
-            window.toggleVolume = toggleVolume;
-            window.speakText = speakText;
+            // ฟังก์ชันจัดการผู้ดูแล
+            window.showAdminLogin = showAdminLogin;
+            window.closeAdminLoginModal = closeAdminLoginModal;
+            window.showAdminSettingsModal = showAdminSettingsModal;
+            window.closeAdminSettingsModal = closeAdminSettingsModal;
+            window.adminLogout = adminLogout;
 
-            // ฟังก์ชันประวัติ
-            window.showHistoryModal = showHistoryModal;
-            window.closeHistoryModal = closeHistoryModal;
-            window.clearHistory = clearHistory;
+            // ฟังก์ชันสำรองข้อมูล
+            window.backupData = backupData;
+            window.restoreData = restoreData;
+            window.resetData = resetData;
+
+            // ฟังก์ชันจัดการไฟล์ในเครื่อง
+            window.addLocalImageToSelection = addLocalImageToSelection;
+            window.viewLocalImage = viewLocalImage;
+            window.deleteLocalImage = deleteLocalImage;
+            window.clearLocalStorage = clearLocalStorage;
+            window.saveToLocalStorage = saveSelectedToLocalStorage;
 
             // Event listeners
             window.addEventListener('click', function(event) {
@@ -2301,11 +2504,14 @@
                 if (event.target === addPhotosModal) {
                     closeAddPhotosModal();
                 }
-                if (event.target === addGalleryPhotoModal) {
-                    closeAddGalleryPhotoModal();
+                if (event.target === adminLoginModal) {
+                    closeAdminLoginModal();
                 }
-                if (event.target === historyModal) {
-                    closeHistoryModal();
+                if (event.target === adminSettingsModal) {
+                    closeAdminSettingsModal();
+                }
+                if (event.target === readonlyOverlay) {
+                    readonlyOverlay.style.display = 'none';
                 }
             });
 
@@ -2321,10 +2527,12 @@
                         closeCreateAlbumModal();
                     } else if (addPhotosModal.style.display === 'flex') {
                         closeAddPhotosModal();
-                    } else if (addGalleryPhotoModal.style.display === 'flex') {
-                        closeAddGalleryPhotoModal();
-                    } else if (historyModal.style.display === 'flex') {
-                        closeHistoryModal();
+                    } else if (adminLoginModal.style.display === 'flex') {
+                        closeAdminLoginModal();
+                    } else if (adminSettingsModal.style.display === 'flex') {
+                        closeAdminSettingsModal();
+                    } else if (readonlyOverlay.style.display === 'flex') {
+                        readonlyOverlay.style.display = 'none';
                     }
                 }
                 
@@ -2335,8 +2543,6 @@
                         nextImage();
                     } else if (event.key === 'f' || event.key === 'F') {
                         enterFullscreen();
-                    } else if (event.key === 'r' || event.key === 'R') {
-                        resetImagePosition();
                     }
                 }
                 
@@ -2347,8 +2553,6 @@
                         fullscreenNextImage();
                     } else if (event.key === 'i' || event.key === 'I') {
                         toggleFullscreenInfo();
-                    } else if (event.key === 'r' || event.key === 'R') {
-                        fullscreenResetPosition();
                     }
                 }
             });
@@ -2385,6 +2589,8 @@
             });
 
             createAlbumForm.addEventListener('submit', createNewAlbum);
+            adminLoginForm.addEventListener('submit', adminLogin);
+            adminSettingsForm.addEventListener('submit', saveAdminSettings);
 
             searchBox.addEventListener('input', render);
             catSelect.addEventListener('change', render);
@@ -2393,7 +2599,6 @@
                 currentTab='gallery';
                 tabGallery.classList.add('active');
                 tabAlbums.classList.remove('active');
-                tabHistory.classList.remove('active');
                 render();
             });
             
@@ -2401,22 +2606,17 @@
                 currentTab='albums';
                 tabAlbums.classList.add('active');
                 tabGallery.classList.remove('active');
-                tabHistory.classList.remove('active');
                 render();
             });
 
-            tabHistory.addEventListener('click', ()=>{
-                currentTab='history';
-                tabHistory.classList.add('active');
-                tabGallery.classList.remove('active');
-                tabAlbums.classList.remove('active');
-                render();
+            // ปรับปรุงการแสดงผลบนมือถือ
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768 && !isAdmin) {
+                    readonlyOverlay.style.display = 'none';
+                } else if (window.innerWidth > 768 && !isAdmin) {
+                    readonlyOverlay.style.display = 'flex';
+                }
             });
-
-            // รอให้โหลดเสียงทั้งหมดก่อน
-            window.speechSynthesis.onvoiceschanged = function() {
-                // เสียงพร้อมใช้งาน
-            };
 
             // Initialize
             loadData();
