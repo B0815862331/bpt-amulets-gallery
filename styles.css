@@ -1,0 +1,17 @@
+/* เพิ่มสไตล์สำหรับช่องกรอกชื่อผู้ใช้ */
+.admin-login input {
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    width: 120px;
+}
+
+/* สำหรับหน้าจอขนาดเล็ก */
+@media (max-width: 768px) {
+    .admin-login input {
+        width: 100px;
+        padding: 6px 12px;
+    }
+}
