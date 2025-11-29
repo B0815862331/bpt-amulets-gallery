@@ -6,23 +6,1328 @@
     <title>📸 พระเครื่องแดนสยาม - แกลเลอรีผู้ใช้</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.pexels.com/photos/19067354/pexels-photo-19067354.jpeg') no-repeat center center fixed;
+            background-size: cover; 
+            color: #fff; 
+            padding-bottom: 20px;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        header { 
+            width: 100%; 
+            background: rgba(20, 20, 20, 0.9); 
+            text-align: center; 
+            padding: 1.2rem 0; 
+            font-size: 1.6rem; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            border-bottom: 1px solid #333; 
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .welcome-message {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: rgba(0, 204, 136, 0.9);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .welcome-message:hover {
+            background: #00ffaa;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .tab-btn { 
+            padding: 0.6rem 1.2rem; 
+            margin: 0 5px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .tab-btn.active { 
+            background: #00cc88; 
+            color: #000; 
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        #top-controls { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            justify-content: center; 
+            margin: 1rem; 
+            padding: 1.2rem; 
+            background: rgba(0,0,0,0.6); 
+            border-radius: 12px; 
+            width: 95%; 
+            max-width: 1000px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        input, select, textarea, button { 
+            padding: 0.7rem 1rem; 
+            border: none; 
+            border-radius: 8px; 
+            font-family: 'Kanit'; 
+            outline: none; 
+            background: rgba(255,255,255,0.9);
+            font-size: 16px; /* ป้องกันการซูมบน iOS */
+        }
+        
+        input[type="text"], select { 
+            width: 200px; 
+        }
+        
+        button {
+            background: #00cc88;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+        }
+        
+        button:hover {
+            background: #00ffaa;
+            transform: translateY(-2px);
+        }
+        
+        button.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        button.secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        #gallery { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 18px; 
+            width: 95%; 
+            max-width: 1000px; 
+            margin-bottom: 2rem; 
+        }
+        
+        .photo, .album-card { 
+            position: relative; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            background: rgba(30,30,30,0.8);
+        }
+        
+        .photo:hover, .album-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.7); 
+        }
+        
+        .photo img { 
+            width: 100%; 
+            height: 180px; 
+            object-fit: cover; 
+            transition: transform 0.3s ease; 
+        }
+        
+        .photo:hover img { 
+            transform: scale(1.05); 
+        }
+        
+        .photo-name { 
+            padding: 10px; 
+            background: rgba(0,0,0,0.7); 
+            font-size: 0.9rem; 
+            text-align: center; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        
+        .photo-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .photo:hover .photo-actions {
+            opacity: 1;
+        }
+        
+        .photo-action-btn {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 25px;
+            height: 25px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .photo-action-btn:hover {
+            background: rgba(0,0,0,0.9);
+            transform: scale(1.1);
+        }
+        
+        .photo-action-btn.delete {
+            background: rgba(255,0,0,0.7);
+        }
+        
+        .photo-action-btn.delete:hover {
+            background: rgba(255,0,0,0.9);
+        }
+        
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 1000; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 15px;
+        }
+        
+        .modal-content { 
+            background: rgba(40,40,40,0.95); 
+            border-radius: 12px; 
+            padding: 20px; 
+            width: 95%; 
+            max-width: 800px; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .modal-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid #555; 
+            padding-bottom: 10px; 
+        }
+        
+        .modal-close { 
+            background: none; 
+            border: none; 
+            color: white; 
+            font-size: 1.8rem; 
+            cursor: pointer; 
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: #ff5555;
+        }
+        
+        .album-cover { 
+            height: 140px; 
+            background-size: cover; 
+            background-position: center; 
+            position: relative; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(60,60,60,0.8);
+        }
+        
+        .empty-album-cover {
+            color: #888;
+            font-size: 3rem;
+        }
+        
+        .album-info { 
+            padding: 12px; 
+        }
+        
+        .album-name { 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+            font-size: 1.1rem;
+        }
+        
+        .album-count { 
+            font-size: 0.85rem; 
+            color: #aaa; 
+        }
+        
+        .album-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .album-action-btn {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .album-action-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .empty-state { 
+            text-align: center; 
+            font-size: 1.2rem; 
+            color: #ccc; 
+            margin: 2rem 0; 
+            grid-column: 1 / -1;
+            padding: 2rem;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: #666;
+        }
+        
+        .album-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .album-photo-item {
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            background: rgba(50,50,50,0.8);
+            position: relative;
+        }
+        
+        .album-photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .album-photo-item img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        
+        .album-photo-name {
+            padding: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .delete-photo-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,0,0,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .album-photo-item:hover .delete-photo-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #imageModalContent {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+        }
+        
+        #imageModalContent.dragging {
+            cursor: grabbing;
+        }
+        
+        .zoomable-image {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
+            cursor: move;
+            transform-origin: center center;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        .zoomable-image.dragging {
+            cursor: grabbing;
+        }
+        
+        .zoomable-image.fullscreen {
+            max-width: 95vw;
+            max-height: 95vh;
+            cursor: move;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 12px;
+            border-radius: 20px;
+            z-index: 10;
+        }
+        
+        .zoom-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .zoom-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+        
+        .zoom-level {
+            color: white;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+        }
+        
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+            z-index: 5;
+        }
+        
+        .nav-btn {
+            background: rgba(0,0,0,0.7);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0,0,0,0.9);
+            transform: scale(1.1);
+        }
+        
+        .image-counter {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            top: 15px;
+            right: 60px;
+            background: rgba(0,0,0,0.7);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(0,0,0,0.9);
+            transform: scale(1.1);
+        }
+        
+        /* Fullscreen styles */
+        .fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.98);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: grab;
+        }
+        
+        .fullscreen-mode.dragging {
+            cursor: grabbing;
+        }
+        
+        .fullscreen-image {
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 8px;
+            cursor: move;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        .fullscreen-image.dragging {
+            cursor: grabbing;
+        }
+        
+        .fullscreen-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(0,0,0,0.8);
+            padding: 12px 20px;
+            border-radius: 25px;
+            z-index: 2001;
+        }
+        
+        .fullscreen-nav {
+            position: fixed;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            transform: translateY(-50%);
+            z-index: 2001;
+        }
+        
+        .fullscreen-counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1rem;
+            z-index: 2001;
+        }
+        
+        .fullscreen-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 2001;
+        }
+        
+        .fullscreen-close:hover {
+            background: rgba(255,0,0,0.7);
+            transform: scale(1.1);
+        }
+        
+        /* Drag Info */
+        .drag-info {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .drag-info.show {
+            opacity: 1;
+        }
+        
+        /* History Styles */
+        .history-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #00cc88;
+        }
+        
+        .history-type {
+            font-weight: bold;
+            color: #00cc88;
+            margin-bottom: 5px;
+        }
+        
+        .history-details {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .history-time {
+            font-size: 0.8rem;
+            color: #888;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #555;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 6px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+        
+        .file-upload {
+            border: 2px dashed #555;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #00cc88;
+            background: rgba(0,204,136,0.1);
+        }
+        
+        .file-upload i {
+            font-size: 2rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+        
+        .uploaded-files {
+            margin-top: 1rem;
+        }
+        
+        .uploaded-file {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding: 1rem;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .github-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .github-link:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
+
+        .add-album-btn {
+            background: #00cc88;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-album-btn:hover {
+            background: #00ffaa;
+            transform: translateY(-2px);
+        }
+
+        .add-photo-btn {
+            background: #00cc88;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-photo-btn:hover {
+            background: #00ffaa;
+            transform: translateY(-2px);
+        }
+
+        .history-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Audio Controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .audio-btn {
+            background: rgba(0, 204, 136, 0.9);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .audio-btn:hover {
+            background: #00ffaa;
+            transform: scale(1.1);
+        }
+
+        .audio-btn.muted {
+            background: rgba(255, 100, 100, 0.9);
+        }
+
+        .audio-btn.muted:hover {
+            background: #ff6666;
+        }
+
+        /* URL Upload Styles */
+        .url-upload-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #555;
+        }
+
+        .url-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .url-input-group input {
+            flex: 1;
+        }
+
+        .url-input-group button {
+            white-space: nowrap;
+        }
+
+        .url-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .url-preview img {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .url-preview p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile-specific styles */
+        .mobile-controls {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            z-index: 90;
+        }
+
+        .mobile-control-btn {
+            background: rgba(0, 204, 136, 0.9);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mobile-control-btn:hover {
+            background: #00ffaa;
+            transform: scale(1.1);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 10px;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+        }
+
+        .mobile-nav-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .mobile-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .mobile-nav-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .mobile-nav-btn.active {
+            background: rgba(0, 204, 136, 0.3);
+            color: #00ffaa;
+        }
+
+        .mobile-nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Touch-friendly improvements */
+        .touch-zoom-controls {
+            display: none;
+            position: fixed;
+            bottom: 150px;
+            right: 20px;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .touch-zoom-btn {
+            background: rgba(0,0,0,0.7);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .touch-zoom-btn:active {
+            background: rgba(0, 204, 136, 0.9);
+            transform: scale(0.95);
+        }
+
+        /* Swipe detection for mobile */
+        .swipe-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+
+        /* Improved mobile gestures */
+        .gesture-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .gesture-hint.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            #top-controls { 
+                flex-direction: column; 
+                align-items: center; 
+                margin: 0.5rem;
+                padding: 1rem;
+            }
+            
+            input[type="text"], select { 
+                width: 100%; 
+            }
+            
+            #gallery { 
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+                gap: 12px;
+                width: 98%;
+            }
+            
+            .modal-content {
+                padding: 15px;
+                width: 98%;
+                max-height: 95vh;
+            }
+            
+            .album-photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            
+            header {
+                font-size: 1.4rem;
+                padding: 1rem 0;
+            }
+            
+            .welcome-message {
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .zoom-controls {
+                bottom: 10px;
+                right: 10px;
+                padding: 6px 10px;
+            }
+            
+            .zoom-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+
+            .github-link {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .fullscreen-nav {
+                padding: 0 15px;
+            }
+            
+            .fullscreen-controls {
+                bottom: 10px;
+                padding: 10px 15px;
+            }
+
+            .audio-controls {
+                bottom: 10px;
+                left: 10px;
+            }
+
+            .audio-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .url-input-group {
+                flex-direction: column;
+            }
+
+            /* Mobile controls */
+            .mobile-controls {
+                display: flex;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .touch-zoom-controls {
+                display: flex;
+            }
+
+            /* Improve touch targets */
+            .photo-action-btn, .album-action-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+
+            .delete-photo-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+
+            /* Adjust modal for mobile */
+            .modal-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions button {
+                width: 100%;
+            }
+
+            /* Improve tab buttons for mobile */
+            .tab-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+                margin: 2px;
+            }
+
+            /* Adjust image viewer for mobile */
+            .image-counter {
+                bottom: 60px;
+                left: 10px;
+            }
+
+            .fullscreen-counter {
+                top: 10px;
+                left: 10px;
+            }
+
+            .fullscreen-close {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+
+            /* Improve gesture hints */
+            .gesture-hint {
+                bottom: 80px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #gallery { 
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+                gap: 10px;
+            }
+            
+            .modal-content {
+                padding: 12px;
+            }
+            
+            .album-photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+            
+            .tab-btn {
+                padding: 0.5rem 0.7rem;
+                font-size: 0.8rem;
+            }
+            
+            .nav-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .github-link {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 10px auto;
+                width: fit-content;
+            }
+            
+            .fullscreen-nav {
+                padding: 0 10px;
+            }
+            
+            .fullscreen-controls {
+                bottom: 5px;
+                padding: 8px 12px;
+            }
+
+            .welcome-message {
+                display: none;
+            }
+
+            .mobile-control-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+
+            .touch-zoom-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .mobile-nav-btn {
+                font-size: 0.7rem;
+                padding: 5px 8px;
+            }
+
+            .mobile-nav-btn i {
+                font-size: 1rem;
+            }
+
+            /* Single column for very small screens */
+            @media (max-width: 360px) {
+                #gallery {
+                    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                }
+
+                .album-photo-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                }
+            }
+        }
+
+        /* Orientation-specific adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .modal-content {
+                max-height: 85vh;
+            }
+
+            .mobile-nav {
+                display: none;
+            }
+
+            .mobile-controls {
+                bottom: 20px;
+            }
+        }
+
+        /* Prevent text size adjustment on orientation change */
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
 </head>
 <body>
     <!-- GitHub Link -->
     <a href="https://github.com/your-username/your-repo-name" class="github-link" target="_blank">
         <i class="fab fa-github"></i> View on GitHub
     </a>
-
-    <!-- Admin Login -->
-    <div class="admin-login" id="adminLogin">
-        <input type="text" id="adminUsername" placeholder="ชื่อผู้ใช้">
-        <input type="password" id="adminPassword" placeholder="รหัสผ่าน">
-        <button onclick="loginAdmin()">เข้าสู่ระบบ</button>
-    </div>
-
-    <!-- Admin Mode Indicator -->
-    <div class="admin-mode" id="adminMode">โหมดผู้ดูแล</div>
 
     <!-- Audio Controls -->
     <div class="audio-controls">
@@ -32,6 +1337,37 @@
         <button class="audio-btn" onclick="playWelcomeMessage()" title="เล่นเสียงต้อนรับอีกครั้ง">
             <i class="fas fa-play"></i>
         </button>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div class="mobile-controls">
+        <button class="mobile-control-btn" onclick="showAddGalleryPhotoModal()" title="เพิ่มรูปภาพ">
+            <i class="fas fa-plus"></i>
+        </button>
+        <button class="mobile-control-btn" onclick="showCreateAlbumModal()" title="สร้างอัลบั้ม">
+            <i class="fas fa-folder-plus"></i>
+        </button>
+        <button class="mobile-control-btn" onclick="toggleSearch()" title="ค้นหา">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-buttons">
+            <button class="mobile-nav-btn active" data-tab="gallery">
+                <i class="fas fa-images"></i>
+                <span>แกลเลอรี</span>
+            </button>
+            <button class="mobile-nav-btn" data-tab="albums">
+                <i class="fas fa-folder"></i>
+                <span>อัลบั้ม</span>
+            </button>
+            <button class="mobile-nav-btn" data-tab="history">
+                <i class="fas fa-history"></i>
+                <span>ประวัติ</span>
+            </button>
+        </div>
     </div>
 
     <header>
@@ -49,16 +1385,12 @@
             <button id="tabHistory" class="tab-btn">ประวัติ</button>
             <select id="categorySelect"></select>
             <input type="text" id="searchBox" placeholder="🔍 ค้นหา...">
-            <button class="add-album-btn" id="addAlbumBtn" onclick="showCreateAlbumModal()" style="display: none;">
+            <button class="add-album-btn" onclick="showCreateAlbumModal()">
                 <i class="fas fa-plus"></i> สร้างอัลบั้ม
             </button>
-            <button class="add-photo-btn" id="addPhotoBtn" onclick="showAddGalleryPhotoModal()" style="display: none;">
+            <button class="add-photo-btn" onclick="showAddGalleryPhotoModal()">
                 <i class="fas fa-plus"></i> เพิ่มรูป
             </button>
-        </div>
-
-        <div class="read-only-note" id="readOnlyNote">
-            <i class="fas fa-info-circle"></i> โหมดดูอย่างเดียว - สำหรับการดูและสำรวจภาพพระเครื่อง
         </div>
 
         <div id="gallery"></div>
@@ -71,7 +1403,7 @@
                     <button class="modal-close" onclick="closeAlbumModal()">&times;</button>
                 </div>
                 <div id="albumModalContent"></div>
-                <div class="form-actions" id="albumActions" style="display: none;">
+                <div class="form-actions">
                     <button onclick="showAddPhotosModal()" class="secondary">
                         <i class="fas fa-plus"></i> เพิ่มรูปภาพ
                     </button>
@@ -90,7 +1422,17 @@
                     <button class="modal-close" onclick="closeImageModal()">&times;</button>
                 </div>
                 <div id="imageModalContent">
+                    <div class="swipe-area" id="swipeArea"></div>
                     <div class="drag-info" id="dragInfo">ลากเมาส์เพื่อขยับรูปภาพ</div>
+                    <div class="gesture-hint" id="gestureHint">ปัดซ้าย/ขวาเพื่อเปลี่ยนรูปภาพ</div>
+                </div>
+                <!-- Touch Zoom Controls for Mobile -->
+                <div class="touch-zoom-controls">
+                    <button class="touch-zoom-btn" onclick="zoomIn()">+</button>
+                    <button class="touch-zoom-btn" onclick="resetZoom()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="touch-zoom-btn" onclick="zoomOut()">-</button>
                 </div>
             </div>
         </div>
@@ -135,6 +1477,16 @@
                     </div>
                     <input type="file" id="photoUpload" multiple accept="image/*" style="display: none;" onchange="handleFileSelect(this.files)">
                 </div>
+                
+                <!-- เพิ่มส่วนอัปโหลดจาก URL -->
+                <div class="url-upload-section">
+                    <label>หรือเพิ่มจาก URL</label>
+                    <div class="url-input-group">
+                        <input type="text" id="albumPhotoURL" placeholder="วาง URL รูปภาพที่นี่ (เช่น https://example.com/image.jpg)">
+                        <button type="button" onclick="loadAlbumPhotoFromURL()">เพิ่มจาก URL</button>
+                    </div>
+                </div>
+                
                 <div class="uploaded-files" id="uploadedFiles">
                     <!-- Uploaded files will be listed here -->
                 </div>
@@ -172,6 +1524,16 @@
                         </div>
                         <input type="file" id="galleryPhotoUpload" accept="image/*" style="display: none;" onchange="handleGalleryPhotoSelect(this.files)">
                     </div>
+                    
+                    <!-- เพิ่มส่วนอัปโหลดจาก URL -->
+                    <div class="url-upload-section">
+                        <label>หรือเพิ่มจาก URL</label>
+                        <div class="url-input-group">
+                            <input type="text" id="galleryPhotoURL" placeholder="วาง URL รูปภาพที่นี่ (เช่น https://example.com/image.jpg)">
+                            <button type="button" onclick="loadGalleryPhotoFromURL()">เพิ่มจาก URL</button>
+                        </div>
+                    </div>
+                    
                     <div id="galleryPhotoPreview" style="text-align: center; margin-top: 1rem;"></div>
                 </form>
                 <div class="form-actions">
@@ -191,7 +1553,7 @@
                 <div id="historyContent">
                     <!-- History items will be listed here -->
                 </div>
-                <div class="form-actions" id="historyActions" style="display: none;">
+                <div class="form-actions">
                     <button onclick="clearHistory()" style="background: #ff4444;">
                         <i class="fas fa-trash"></i> ล้างประวัติ
                     </button>
@@ -216,6 +1578,14 @@
                 <button class="zoom-btn" onclick="toggleFullscreenInfo()"><i class="fas fa-info"></i></button>
             </div>
             <div class="drag-info" id="fullscreenDragInfo">ลากเมาส์เพื่อขยับรูปภาพ</div>
+            <!-- Touch Zoom Controls for Mobile in Fullscreen -->
+            <div class="touch-zoom-controls">
+                <button class="touch-zoom-btn" onclick="fullscreenZoomIn()">+</button>
+                <button class="touch-zoom-btn" onclick="fullscreenResetZoom()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="touch-zoom-btn" onclick="fullscreenZoomOut()">-</button>
+            </div>
         </div>
     </div>
 
@@ -223,7 +1593,1462 @@
         <p>BPT AI โค้ดและไอเดียอุ๋ยบางแค | แกลเลอรีพระเครื่องแดนสยาม</p>
     </footer>
 
-    <script src="config.js"></script>
-    <script src="script.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            // ข้อมูลตัวอย่าง - พร้อมระบบจัดการแกลเลอรี
+            let data = {
+                "categories": {
+                    "พระยอดนิยม": [
+                        {
+                            "name": "พระบางลำพูน",
+                            "data": "https://images.unsplash.com/photo-1586947201838-5d66c1b94a5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVkZGhhfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+                            "createdAt": "2024-01-15T10:30:00Z",
+                            "createdBy": "ผู้ใช้"
+                        }
+                    ]
+                },
+                "albums": {
+                    "พระเครื่องกรุงเทพมหานคร": {
+                        "photos": [
+                            {
+                                "name": "พระกรุวัดราชบพิธ",
+                                "data": "https://images.unsplash.com/photo-1547994777-8d47e752ad49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJ1ZGRoYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+                                "createdAt": "2024-01-16T14:20:00Z",
+                                "createdBy": "ผู้ใช้"
+                            }
+                        ],
+                        "description": "",
+                        "createdAt": "2024-01-16T14:15:00Z",
+                        "createdBy": "ผู้ใช้"
+                    }
+                },
+                "history": [
+                    {
+                        "type": "สร้างหมวดหมู่",
+                        "details": "สร้างหมวดหมู่ 'พระยอดนิยม'",
+                        "timestamp": "2024-01-15T10:30:00Z"
+                    },
+                    {
+                        "type": "เพิ่มรูปภาพ",
+                        "details": "เพิ่มรูปภาพ 'พระบางลำพูน' ในหมวดหมู่ 'พระยอดนิยม'",
+                        "timestamp": "2024-01-15T10:30:00Z"
+                    },
+                    {
+                        "type": "สร้างอัลบั้ม",
+                        "details": "สร้างอัลบั้ม 'พระเครื่องกรุงเทพมหานคร'",
+                        "timestamp": "2024-01-16T14:15:00Z"
+                    },
+                    {
+                        "type": "เพิ่มรูปภาพ",
+                        "details": "เพิ่มรูปภาพ 'พระกรุวัดราชบพิธ' ในอัลบั้ม 'พระเครื่องกรุงเทพมหานคร'",
+                        "timestamp": "2024-01-16T14:20:00Z"
+                    }
+                ]
+            };
+
+            // ตัวแปร global
+            const catSelect = document.getElementById('categorySelect');
+            const gallery = document.getElementById('gallery');
+            const searchBox = document.getElementById('searchBox');
+            const albumModal = document.getElementById('albumModal');
+            const modalAlbumTitle = document.getElementById('modalAlbumTitle');
+            const albumModalContent = document.getElementById('albumModalContent');
+            const tabGallery = document.getElementById('tabGallery');
+            const tabAlbums = document.getElementById('tabAlbums');
+            const tabHistory = document.getElementById('tabHistory');
+            const imageModal = document.getElementById('imageModal');
+            const modalImageTitle = document.getElementById('modalImageTitle');
+            const imageModalContent = document.getElementById('imageModalContent');
+            const fullscreenMode = document.getElementById('fullscreenMode');
+            const fullscreenImage = document.getElementById('fullscreenImage');
+            const fullscreenCounter = document.getElementById('fullscreenCounter');
+            const fullscreenZoomLevel = document.getElementById('fullscreenZoomLevel');
+            const createAlbumModal = document.getElementById('createAlbumModal');
+            const createAlbumForm = document.getElementById('createAlbumForm');
+            const addPhotosModal = document.getElementById('addPhotosModal');
+            const addPhotosTitle = document.getElementById('addPhotosTitle');
+            const uploadedFiles = document.getElementById('uploadedFiles');
+            const addGalleryPhotoModal = document.getElementById('addGalleryPhotoModal');
+            const addGalleryPhotoForm = document.getElementById('addGalleryPhotoForm');
+            const galleryPhotoPreview = document.getElementById('galleryPhotoPreview');
+            const historyModal = document.getElementById('historyModal');
+            const historyContent = document.getElementById('historyContent');
+            const volumeBtn = document.getElementById('volumeBtn');
+            const dragInfo = document.getElementById('dragInfo');
+            const fullscreenDragInfo = document.getElementById('fullscreenDragInfo');
+            const mobileNavButtons = document.querySelectorAll('.mobile-nav-btn');
+            const gestureHint = document.getElementById('gestureHint');
+
+            let currentTab = 'gallery';
+            let currentImages = [];
+            let currentImageIndex = 0;
+            let currentZoom = 1;
+            let fullscreenZoom = 1;
+            let showFullscreenInfo = true;
+            let currentAlbumName = '';
+            let selectedFiles = [];
+            let selectedGalleryPhoto = null;
+            let isMuted = false;
+            let speechSynthesis = window.speechSynthesis;
+            let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            // ตัวแปรสำหรับการลากเม้าขยับรูป
+            let currentTranslateX = 0, currentTranslateY = 0;
+            let fullscreenCurrentTranslateX = 0, fullscreenCurrentTranslateY = 0;
+
+            // ระบบเสียงพูด
+            function playWelcomeMessage() {
+                if (isMuted) return;
+                
+                const welcomeText = "ยินดีต้อนรับสู่แหล่งแหล่งการเรียนรู้พระเครื่องแดนสยาม";
+                speakText(welcomeText);
+            }
+
+            function speakText(text) {
+                if (isMuted || !speechSynthesis) return;
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'th-TH';
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                const voices = speechSynthesis.getVoices();
+                const thaiVoice = voices.find(voice => voice.lang === 'th-TH' || voice.lang.startsWith('th-'));
+                if (thaiVoice) {
+                    utterance.voice = thaiVoice;
+                }
+                
+                speechSynthesis.speak(utterance);
+            }
+
+            function toggleVolume() {
+                isMuted = !isMuted;
+                if (isMuted) {
+                    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    volumeBtn.classList.add('muted');
+                    speechSynthesis.cancel();
+                } else {
+                    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    volumeBtn.classList.remove('muted');
+                }
+            }
+
+            // ฟังก์ชันใหม่: อัปโหลดรูปภาพจาก URL
+            function loadGalleryPhotoFromURL() {
+                const urlInput = document.getElementById('galleryPhotoURL');
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    alert('กรุณากรอก URL ของรูปภาพ');
+                    return;
+                }
+                
+                // ตรวจสอบว่าเป็น URL ที่ถูกต้อง
+                if (!isValidURL(url)) {
+                    alert('กรุณากรอก URL ที่ถูกต้อง');
+                    return;
+                }
+                
+                // แสดงสถานะกำลังโหลด
+                galleryPhotoPreview.innerHTML = '<p style="color: #ccc;">กำลังโหลดรูปภาพ...</p>';
+                
+                // สร้าง Image object เพื่อทดสอบโหลดรูปภาพ
+                const img = new Image();
+                img.onload = function() {
+                    // เมื่อโหลดสำเร็จ
+                    selectedGalleryPhoto = {
+                        name: getFilenameFromURL(url) || 'รูปภาพจาก URL',
+                        data: url
+                    };
+                    
+                    galleryPhotoPreview.innerHTML = `
+                        <div class="url-preview">
+                            <img src="${url}" alt="รูปภาพจาก URL">
+                            <p>${selectedGalleryPhoto.name}</p>
+                            <p style="color: #00cc88;">โหลดรูปภาพสำเร็จ!</p>
+                        </div>
+                    `;
+                    
+                    urlInput.value = '';
+                };
+                
+                img.onerror = function() {
+                    // เมื่อโหลดไม่สำเร็จ
+                    galleryPhotoPreview.innerHTML = '<p style="color: #ff5555;">ไม่สามารถโหลดรูปภาพจาก URL นี้ได้</p>';
+                };
+                
+                img.src = url;
+            }
+
+            function loadAlbumPhotoFromURL() {
+                const urlInput = document.getElementById('albumPhotoURL');
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    alert('กรุณากรอก URL ของรูปภาพ');
+                    return;
+                }
+                
+                // ตรวจสอบว่าเป็น URL ที่ถูกต้อง
+                if (!isValidURL(url)) {
+                    alert('กรุณากรอก URL ที่ถูกต้อง');
+                    return;
+                }
+                
+                // แสดงสถานะกำลังโหลด
+                const loadingElement = document.createElement('div');
+                loadingElement.className = 'uploaded-file';
+                loadingElement.innerHTML = `<span>กำลังโหลดรูปภาพจาก URL...</span>`;
+                uploadedFiles.appendChild(loadingElement);
+                
+                // สร้าง Image object เพื่อทดสอบโหลดรูปภาพ
+                const img = new Image();
+                img.onload = function() {
+                    // เมื่อโหลดสำเร็จ
+                    loadingElement.remove();
+                    
+                    const filename = getFilenameFromURL(url) || 'รูปภาพจาก URL';
+                    selectedFiles.push({
+                        name: filename,
+                        data: url
+                    });
+                    
+                    updateUploadedFilesList();
+                    urlInput.value = '';
+                };
+                
+                img.onerror = function() {
+                    // เมื่อโหลดไม่สำเร็จ
+                    loadingElement.innerHTML = `<span style="color: #ff5555;">ไม่สามารถโหลดรูปภาพจาก URL นี้ได้</span>`;
+                    setTimeout(() => {
+                        loadingElement.remove();
+                    }, 3000);
+                };
+                
+                img.src = url;
+            }
+
+            function isValidURL(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            function getFilenameFromURL(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const pathname = urlObj.pathname;
+                    return pathname.substring(pathname.lastIndexOf('/') + 1) || 'รูปภาพจาก URL';
+                } catch (_) {
+                    return 'รูปภาพจาก URL';
+                }
+            }
+
+            // ฟังก์ชันสำหรับมือถือ
+            function toggleSearch() {
+                if (searchBox.style.display === 'none' || searchBox.style.display === '') {
+                    searchBox.style.display = 'block';
+                    searchBox.focus();
+                } else {
+                    searchBox.style.display = 'none';
+                }
+            }
+
+            function setupMobileNavigation() {
+                mobileNavButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const tab = this.getAttribute('data-tab');
+                        
+                        // อัปเดตสถานะปุ่ม
+                        mobileNavButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // อัปเดตแท็บหลัก
+                        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+                        
+                        // เปลี่ยนแท็บ
+                        currentTab = tab;
+                        render();
+                    });
+                });
+            }
+
+            function setupTouchGestures() {
+                const swipeArea = document.getElementById('swipeArea');
+                if (!swipeArea) return;
+                
+                swipeArea.addEventListener('touchstart', function(e) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                });
+                
+                swipeArea.addEventListener('touchend', function(e) {
+                    if (!touchStartX || !touchStartY) return;
+                    
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    const diffX = touchStartX - touchEndX;
+                    const diffY = touchStartY - touchEndY;
+                    
+                    // ถ้าเป็นการปัดในแนวตั้งมากกว่าแนวนอน ไม่ให้นับเป็นการปัดเปลี่ยนรูป
+                    if (Math.abs(diffY) > Math.abs(diffX)) return;
+                    
+                    // ปัดซ้าย (ไปรูปต่อไป)
+                    if (diffX > 50) {
+                        nextImage();
+                    }
+                    // ปัดขวา (ไปรูปก่อนหน้า)
+                    else if (diffX < -50) {
+                        prevImage();
+                    }
+                    
+                    touchStartX = 0;
+                    touchStartY = 0;
+                });
+            }
+
+            function showGestureHint() {
+                if (!isMobile) return;
+                
+                gestureHint.classList.add('show');
+                setTimeout(() => {
+                    gestureHint.classList.remove('show');
+                }, 3000);
+            }
+
+            // ระบบประวัติการใช้งาน
+            function addHistory(type, details) {
+                const historyItem = {
+                    type: type,
+                    details: details,
+                    timestamp: new Date().toISOString()
+                };
+                
+                data.history.unshift(historyItem);
+                
+                // จำกัดจำนวนประวัติไว้ที่ 50 รายการ
+                if (data.history.length > 50) {
+                    data.history = data.history.slice(0, 50);
+                }
+                
+                saveToLocalStorage();
+                
+                // อ่านประวัติออกเสียง
+                if (!isMuted) {
+                    setTimeout(() => {
+                        speakText(`มีการ${type} ${details}`);
+                    }, 500);
+                }
+            }
+
+            function renderHistory() {
+                historyContent.innerHTML = '';
+                
+                if (data.history.length === 0) {
+                    historyContent.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i> ยังไม่มีประวัติการใช้งาน</div>';
+                    return;
+                }
+                
+                data.history.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const time = new Date(item.timestamp).toLocaleString('th-TH');
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-type">${item.type}</div>
+                        <div class="history-details">${item.details}</div>
+                        <div class="history-time">${time}</div>
+                    `;
+                    
+                    historyContent.appendChild(historyItem);
+                });
+            }
+
+            function clearHistory() {
+                if (confirm('คุณต้องการล้างประวัติการใช้งานทั้งหมดใช่หรือไม่?')) {
+                    data.history = [];
+                    saveToLocalStorage();
+                    renderHistory();
+                    speakText('ล้างประวัติการใช้งานเรียบร้อยแล้ว');
+                }
+            }
+
+            // ระบบลากเม้าขยับรูปภาพ
+            function setupImageDrag(imageElement, container, isFullscreen = false) {
+                let isDraggingLocal = false;
+                let startXLocal, startYLocal;
+                let translateXLocal = isFullscreen ? fullscreenCurrentTranslateX : currentTranslateX;
+                let translateYLocal = isFullscreen ? fullscreenCurrentTranslateY : currentTranslateY;
+
+                function startDrag(e) {
+                    // บนมือถือ ให้ใช้การปัดเปลี่ยนรูปแทนการลาก
+                    if (isMobile && e.type === 'touchstart') return;
+                    
+                    e.preventDefault();
+                    isDraggingLocal = true;
+                    
+                    if (e.type === 'touchstart') {
+                        startXLocal = e.touches[0].clientX - translateXLocal;
+                        startYLocal = e.touches[0].clientY - translateYLocal;
+                    } else {
+                        startXLocal = e.clientX - translateXLocal;
+                        startYLocal = e.clientY - translateYLocal;
+                    }
+                    
+                    if (isFullscreen) {
+                        fullscreenMode.classList.add('dragging');
+                        fullscreenImage.classList.add('dragging');
+                    } else {
+                        imageModalContent.classList.add('dragging');
+                        imageElement.classList.add('dragging');
+                    }
+                    
+                    // แสดงคำแนะนำการลาก
+                    if (isFullscreen) {
+                        fullscreenDragInfo.classList.add('show');
+                        setTimeout(() => fullscreenDragInfo.classList.remove('show'), 2000);
+                    } else {
+                        dragInfo.classList.add('show');
+                        setTimeout(() => dragInfo.classList.remove('show'), 2000);
+                    }
+                }
+
+                function drag(e) {
+                    if (!isDraggingLocal) return;
+                    e.preventDefault();
+
+                    let clientX, clientY;
+                    if (e.type === 'touchmove') {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    } else {
+                        clientX = e.clientX;
+                        clientY = e.clientY;
+                    }
+
+                    translateXLocal = clientX - startXLocal;
+                    translateYLocal = clientY - startYLocal;
+
+                    // จำกัดการขยับไม่ให้เกินขอบเขต
+                    const maxMove = isFullscreen ? 200 : 100;
+                    translateXLocal = Math.max(Math.min(translateXLocal, maxMove), -maxMove);
+                    translateYLocal = Math.max(Math.min(translateYLocal, maxMove), -maxMove);
+
+                    imageElement.style.transform = `scale(${isFullscreen ? fullscreenZoom : currentZoom}) translate(${translateXLocal}px, ${translateYLocal}px)`;
+                }
+
+                function endDrag() {
+                    isDraggingLocal = false;
+                    
+                    if (isFullscreen) {
+                        fullscreenMode.classList.remove('dragging');
+                        fullscreenImage.classList.remove('dragging');
+                        fullscreenCurrentTranslateX = translateXLocal;
+                        fullscreenCurrentTranslateY = translateYLocal;
+                    } else {
+                        imageModalContent.classList.remove('dragging');
+                        imageElement.classList.remove('dragging');
+                        currentTranslateX = translateXLocal;
+                        currentTranslateY = translateYLocal;
+                    }
+                }
+
+                function resetPosition() {
+                    translateXLocal = 0;
+                    translateYLocal = 0;
+                    currentTranslateX = 0;
+                    currentTranslateY = 0;
+                    fullscreenCurrentTranslateX = 0;
+                    fullscreenCurrentTranslateY = 0;
+                    
+                    imageElement.style.transform = `scale(${isFullscreen ? fullscreenZoom : currentZoom}) translate(0px, 0px)`;
+                }
+
+                // Event listeners สำหรับเมาส์
+                imageElement.addEventListener('mousedown', startDrag);
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', endDrag);
+
+                // Event listeners สำหรับทัชสกรีน
+                if (!isMobile) {
+                    imageElement.addEventListener('touchstart', startDrag, { passive: false });
+                    document.addEventListener('touchmove', drag, { passive: false });
+                    document.addEventListener('touchend', endDrag);
+                }
+
+                return { resetPosition };
+            }
+
+            // โหลดข้อมูลจาก localStorage ถ้ามี
+            function loadFromLocalStorage() {
+                const savedData = localStorage.getItem('bptAmuletsData');
+                if (savedData) {
+                    data = JSON.parse(savedData);
+                }
+            }
+
+            // บันทึกข้อมูลไปยัง localStorage
+            function saveToLocalStorage() {
+                localStorage.setItem('bptAmuletsData', JSON.stringify(data));
+            }
+
+            function loadData(){
+                try {
+                    loadFromLocalStorage();
+                    loadCategories();
+                    render();
+                    
+                    // ตั้งค่าสำหรับมือถือ
+                    if (isMobile) {
+                        setupMobileNavigation();
+                        setupTouchGestures();
+                    }
+                    
+                    setTimeout(() => {
+                        playWelcomeMessage();
+                    }, 1000);
+                    
+                } catch(e){
+                    console.error('ไม่สามารถโหลดข้อมูลได้:', e);
+                    gallery.innerHTML='<p style="text-align:center;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                }
+            }
+
+            function renderGallery(){
+                gallery.innerHTML='';
+                const search = searchBox.value.toLowerCase();
+                const selectedCategory = catSelect.value;
+                const cats = selectedCategory ? [selectedCategory] : Object.keys(data.categories||{});
+                
+                let hasResults = false;
+                
+                cats.forEach(cat=>{
+                    data.categories[cat].forEach((photo, index)=>{
+                        if(search && !photo.name.toLowerCase().includes(search) && !cat.toLowerCase().includes(search)) return;
+                        hasResults = true;
+                        const div = document.createElement('div'); 
+                        div.className='photo';
+                        div.innerHTML=`
+                            <div class="photo-actions">
+                                <button class="photo-action-btn" onclick="event.stopPropagation(); speakText('${photo.name}')" title="อ่านชื่อรูปภาพ">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="photo-action-btn delete" onclick="event.stopPropagation(); deleteGalleryPhoto('${cat}', ${index})" title="ลบรูปภาพ">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <img src="${photo.data}" alt="${photo.name}" loading="lazy">
+                            <div class="photo-name">${photo.name}</div>
+                        `;
+                        div.addEventListener('click', () => {
+                            const allPhotos = [];
+                            cats.forEach(c => {
+                                data.categories[c].forEach(p => {
+                                    if(search && !p.name.toLowerCase().includes(search) && !c.toLowerCase().includes(search)) return;
+                                    allPhotos.push(p);
+                                });
+                            });
+                            viewImage(photo.data, photo.name, allPhotos);
+                        });
+                        gallery.appendChild(div);
+                    });
+                });
+                
+                if(!hasResults) {
+                    gallery.innerHTML='<div class="empty-state"><i class="fas fa-image"></i> ไม่พบรูปภาพที่ตรงกับการค้นหา</div>';
+                }
+            }
+
+            function renderAlbums(){
+                gallery.innerHTML='';
+                const search = searchBox.value.toLowerCase();
+                const albums = Object.keys(data.albums||{});
+                
+                if(albums.length===0){
+                    gallery.innerHTML='<div class="empty-state"><i class="fas fa-folder"></i> ยังไม่มีอัลบั้ม</div>';
+                    return;
+                }
+                
+                let hasResults = false;
+                albums.forEach(name=>{
+                    if(search && !name.toLowerCase().includes(search)) return;
+                    hasResults = true;
+                    const card = document.createElement('div'); 
+                    card.className='album-card';
+                    card.onclick=()=>viewAlbumByName(name);
+                    
+                    const albumPhotos = data.albums[name].photos;
+                    const hasPhotos = albumPhotos && albumPhotos.length > 0;
+                    const cover = hasPhotos ? 
+                        albumPhotos[0].data : 
+                        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+                    
+                    card.innerHTML=`
+                        <div class="album-cover" style="background-image:url('${cover}')">
+                            ${!hasPhotos ? '<div class="empty-album-cover"><i class="far fa-folder-open"></i></div>' : ''}
+                        </div>
+                        <div class="album-info">
+                            <div class="album-name">${name}</div>
+                            <div class="album-count">${albumPhotos.length} รูป</div>
+                            <div class="album-actions">
+                                <button class="album-action-btn" onclick="event.stopPropagation(); editAlbum('${name}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="album-action-btn" onclick="event.stopPropagation(); deleteAlbum('${name}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                    gallery.appendChild(card);
+                });
+                
+                if(!hasResults) {
+                    gallery.innerHTML='<div class="empty-state"><i class="fas fa-folder"></i> ไม่พบอัลบั้มที่ตรงกับการค้นหา</div>';
+                }
+            }
+
+            function renderHistoryView() {
+                gallery.innerHTML = '';
+                renderHistory();
+            }
+
+            function render(){
+                if(currentTab==='gallery'){
+                    catSelect.style.display='inline-block';
+                    renderGallery();
+                } else if(currentTab==='albums') {
+                    catSelect.style.display='none';
+                    renderAlbums();
+                } else if(currentTab==='history') {
+                    catSelect.style.display='none';
+                    renderHistoryView();
+                }
+            }
+
+            function loadCategories(){ 
+                catSelect.innerHTML='';
+                const galleryCategorySelect = document.getElementById('galleryPhotoCategory');
+                galleryCategorySelect.innerHTML = '<option value="">เลือกหมวดหมู่</option>';
+                
+                const keys=Object.keys(data.categories||{});
+                if(keys.length===0){ 
+                    const opt=document.createElement('option'); 
+                    opt.textContent='-- ยังไม่มีหมวดหมู่ --'; 
+                    opt.disabled=true; 
+                    opt.selected=true; 
+                    catSelect.appendChild(opt);
+                }
+                else {
+                    const allOpt = document.createElement('option');
+                    allOpt.value = '';
+                    allOpt.textContent = 'ทั้งหมด';
+                    allOpt.selected = true;
+                    catSelect.appendChild(allOpt);
+                    
+                    keys.forEach(k=>{
+                        const opt=document.createElement('option'); 
+                        opt.value=k; 
+                        opt.textContent=k; 
+                        catSelect.appendChild(opt);
+                        
+                        const galleryOpt = document.createElement('option');
+                        galleryOpt.value = k;
+                        galleryOpt.textContent = k;
+                        galleryCategorySelect.appendChild(galleryOpt);
+                    });
+                }
+            }
+
+            // ระบบจัดการแกลเลอรี
+            function showAddGalleryPhotoModal() {
+                addGalleryPhotoForm.reset();
+                galleryPhotoPreview.innerHTML = '';
+                selectedGalleryPhoto = null;
+                addGalleryPhotoModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeAddGalleryPhotoModal() {
+                addGalleryPhotoModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            function handleGalleryPhotoSelect(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            selectedGalleryPhoto = {
+                                name: file.name,
+                                data: e.target.result
+                            };
+                            
+                            galleryPhotoPreview.innerHTML = `
+                                <img src="${e.target.result}" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
+                                <p style="margin-top: 10px; color: #ccc;">${file.name}</p>
+                            `;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+
+            function saveGalleryPhoto() {
+                const photoName = document.getElementById('galleryPhotoName').value.trim();
+                const category = document.getElementById('galleryPhotoCategory').value;
+                
+                if (!photoName) {
+                    alert('กรุณากรอกชื่อรูปภาพ');
+                    return;
+                }
+                
+                if (!category) {
+                    alert('กรุณาเลือกหมวดหมู่');
+                    return;
+                }
+                
+                if (!selectedGalleryPhoto) {
+                    alert('กรุณาเลือกรูปภาพ');
+                    return;
+                }
+
+                // สร้างหมวดหมู่ใหม่ถ้ายังไม่มี
+                if (!data.categories[category]) {
+                    data.categories[category] = [];
+                    addHistory('สร้างหมวดหมู่', `สร้างหมวดหมู่ '${category}'`);
+                }
+
+                // เพิ่มรูปภาพในหมวดหมู่
+                const newPhoto = {
+                    name: photoName,
+                    data: selectedGalleryPhoto.data,
+                    createdAt: new Date().toISOString(),
+                    createdBy: 'ผู้ใช้'
+                };
+                
+                data.categories[category].push(newPhoto);
+                saveToLocalStorage();
+                
+                addHistory('เพิ่มรูปภาพ', `เพิ่มรูปภาพ '${photoName}' ในหมวดหมู่ '${category}'`);
+                
+                closeAddGalleryPhotoModal();
+                render();
+                
+                speakText(`เพิ่มรูปภาพ ${photoName} ในหมวดหมู่ ${category} เรียบร้อยแล้ว`);
+            }
+
+            function deleteGalleryPhoto(category, index) {
+                const photo = data.categories[category][index];
+                if (confirm(`คุณต้องการลบรูปภาพ "${photo.name}" ใช่หรือไม่?`)) {
+                    data.categories[category].splice(index, 1);
+                    
+                    // ลบหมวดหมู่ถ้าไม่มีรูปภาพแล้ว
+                    if (data.categories[category].length === 0) {
+                        delete data.categories[category];
+                    }
+                    
+                    saveToLocalStorage();
+                    addHistory('ลบรูปภาพ', `ลบรูปภาพ '${photo.name}' จากหมวดหมู่ '${category}'`);
+                    render();
+                    
+                    speakText(`ลบรูปภาพ ${photo.name} เรียบร้อยแล้ว`);
+                }
+            }
+
+            // ระบบจัดการอัลบั้ม
+            function showCreateAlbumModal() {
+                createAlbumForm.reset();
+                createAlbumModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeCreateAlbumModal() {
+                createAlbumModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            function showAddPhotosModal() {
+                addPhotosTitle.textContent = `เพิ่มรูปภาพในอัลบั้ม "${currentAlbumName}"`;
+                uploadedFiles.innerHTML = '';
+                selectedFiles = [];
+                addPhotosModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeAddPhotosModal() {
+                addPhotosModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            function handleFileSelect(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        reader.onload = (function(theFile) {
+                            return function(e) {
+                                selectedFiles.push({
+                                    name: theFile.name,
+                                    data: e.target.result
+                                });
+                                updateUploadedFilesList();
+                            };
+                        })(file);
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+
+            function updateUploadedFilesList() {
+                uploadedFiles.innerHTML = '';
+                selectedFiles.forEach((file, index) => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'uploaded-file';
+                    fileElement.innerHTML = `
+                        <span>${file.name}</span>
+                        <button onclick="removeSelectedFile(${index})" style="background: #ff4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    uploadedFiles.appendChild(fileElement);
+                });
+            }
+
+            function removeSelectedFile(index) {
+                selectedFiles.splice(index, 1);
+                updateUploadedFilesList();
+            }
+
+            function createNewAlbum(event) {
+                event.preventDefault();
+                const albumName = document.getElementById('albumName').value.trim();
+                const albumDescription = document.getElementById('albumDescription').value.trim();
+
+                if (!albumName) {
+                    alert('กรุณากรอกชื่ออัลบั้ม');
+                    return;
+                }
+
+                if (data.albums[albumName]) {
+                    alert('มีอัลบั้มชื่อนี้อยู่แล้ว');
+                    return;
+                }
+
+                data.albums[albumName] = {
+                    description: albumDescription,
+                    photos: [],
+                    createdAt: new Date().toISOString(),
+                    createdBy: 'ผู้ใช้'
+                };
+
+                saveToLocalStorage();
+                addHistory('สร้างอัลบั้ม', `สร้างอัลบั้ม '${albumName}'`);
+                
+                closeCreateAlbumModal();
+                render();
+                
+                speakText(`สร้างอัลบั้ม ${albumName} เรียบร้อยแล้ว`);
+            }
+
+            function savePhotosToAlbum() {
+                if (selectedFiles.length === 0) {
+                    alert('กรุณาเลือกรูปภาพก่อน');
+                    return;
+                }
+
+                selectedFiles.forEach(file => {
+                    const newPhoto = {
+                        name: file.name,
+                        data: file.data,
+                        createdAt: new Date().toISOString(),
+                        createdBy: 'ผู้ใช้'
+                    };
+                    
+                    data.albums[currentAlbumName].photos.push(newPhoto);
+                });
+
+                saveToLocalStorage();
+                addHistory('เพิ่มรูปภาพ', `เพิ่มรูปภาพ ${selectedFiles.length} รูปในอัลบั้ม '${currentAlbumName}'`);
+                
+                closeAddPhotosModal();
+                viewAlbumByName(currentAlbumName);
+                
+                speakText(`เพิ่มรูปภาพ ${selectedFiles.length} รูปในอัลบั้ม ${currentAlbumName} เรียบร้อยแล้ว`);
+            }
+
+            function deletePhotoFromAlbum(albumName, photoIndex) {
+                const photo = data.albums[albumName].photos[photoIndex];
+                if (confirm('คุณต้องการลบรูปภาพนี้ใช่หรือไม่?')) {
+                    data.albums[albumName].photos.splice(photoIndex, 1);
+                    saveToLocalStorage();
+                    addHistory('ลบรูปภาพ', `ลบรูปภาพ '${photo.name}' จากอัลบั้ม '${albumName}'`);
+                    viewAlbumByName(albumName);
+                    
+                    speakText(`ลบรูปภาพ ${photo.name} เรียบร้อยแล้ว`);
+                }
+            }
+
+            function deleteAlbum(albumName) {
+                if (confirm(`คุณต้องการลบอัลบั้ม "${albumName}" ใช่หรือไม่?`)) {
+                    delete data.albums[albumName];
+                    saveToLocalStorage();
+                    addHistory('ลบอัลบั้ม', `ลบอัลบั้ม '${albumName}'`);
+                    render();
+                    if (albumModal.style.display === 'flex' && currentAlbumName === albumName) {
+                        closeAlbumModal();
+                    }
+                    
+                    speakText(`ลบอัลบั้ม ${albumName} เรียบร้อยแล้ว`);
+                }
+            }
+
+            function deleteCurrentAlbum() {
+                deleteAlbum(currentAlbumName);
+            }
+
+            function editAlbum(albumName) {
+                const newName = prompt('กรอกชื่ออัลบั้มใหม่:', albumName);
+                if (newName && newName.trim() && newName !== albumName) {
+                    if (data.albums[newName]) {
+                        alert('มีอัลบั้มชื่อนี้อยู่แล้ว');
+                        return;
+                    }
+                    data.albums[newName] = data.albums[albumName];
+                    delete data.albums[albumName];
+                    saveToLocalStorage();
+                    addHistory('แก้ไขอัลบั้ม', `แก้ไขชื่ออัลบั้มจาก '${albumName}' เป็น '${newName}'`);
+                    render();
+                    if (albumModal.style.display === 'flex' && currentAlbumName === albumName) {
+                        closeAlbumModal();
+                    }
+                    
+                    speakText(`แก้ไขชื่ออัลบั้มเป็น ${newName} เรียบร้อยแล้ว`);
+                }
+            }
+
+            function viewAlbumByName(name){
+                currentAlbumName = name;
+                modalAlbumTitle.textContent=name; 
+                albumModalContent.innerHTML='';
+                const photos=data.albums[name]?.photos||[];
+                
+                if(photos.length===0) {
+                    albumModalContent.innerHTML=`
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="far fa-folder-open" style="font-size: 4rem; color: #666; margin-bottom: 1rem;"></i>
+                            <p style="color: #ccc; font-size: 1.1rem;">อัลบั้มนี้ยังไม่มีรูปภาพ</p>
+                            <p style="color: #888; margin-top: 0.5rem;">เพิ่มรูปภาพแรกของคุณในอัลบั้ม "${name}"</p>
+                        </div>
+                    `;
+                } else {
+                    const grid = document.createElement('div');
+                    grid.className = 'album-photo-grid';
+                    
+                    photos.forEach((p, index)=>{
+                        const item = document.createElement('div');
+                        item.className = 'album-photo-item';
+                        item.innerHTML = `
+                            <button class="delete-photo-btn" onclick="deletePhotoFromAlbum('${name}', ${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <img src="${p.data}" alt="${p.name}" loading="lazy">
+                            <div class="album-photo-name">${p.name}</div>
+                        `;
+                        item.addEventListener('click', (e) => {
+                            if (!e.target.classList.contains('delete-photo-btn')) {
+                                viewImage(p.data, p.name, photos);
+                            }
+                        });
+                        grid.appendChild(item);
+                    });
+                    
+                    albumModalContent.appendChild(grid);
+                }
+                
+                albumModal.style.display='flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // ฟังก์ชันแสดงประวัติ
+            function showHistoryModal() {
+                renderHistory();
+                historyModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeHistoryModal() {
+                historyModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            // ส่วนที่เหลือของฟังก์ชัน (viewImage, zoom, fullscreen, ฯลฯ)
+            function viewImage(src, title, images) {
+                currentImages = images || [{data: src, name: title}];
+                currentImageIndex = currentImages.findIndex(img => img.data === src);
+                if (currentImageIndex === -1) currentImageIndex = 0;
+                
+                updateImageDisplay();
+                imageModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                resetZoom();
+                resetImagePosition();
+                
+                // แสดงคำแนะนำการปัดบนมือถือ
+                if (isMobile) {
+                    showGestureHint();
+                }
+                
+                // อ่านชื่อรูปภาพออกเสียง
+                if (!isMuted) {
+                    setTimeout(() => {
+                        speakText(`รูปภาพ ${title}`);
+                    }, 500);
+                }
+            }
+
+            function updateImageDisplay() {
+                const currentImage = currentImages[currentImageIndex];
+                modalImageTitle.textContent = currentImage.name;
+                
+                imageModalContent.innerHTML = `
+                    <button class="fullscreen-btn" onclick="enterFullscreen()" title="เต็มจอ">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="image-nav">
+                        <button class="nav-btn prev-btn" onclick="prevImage()">&#10094;</button>
+                        <button class="nav-btn next-btn" onclick="nextImage()">&#10095;</button>
+                    </div>
+                    <div class="image-counter">${currentImageIndex + 1}/${currentImages.length}</div>
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" onclick="zoomOut()">−</button>
+                        <div class="zoom-level">${Math.round(currentZoom * 100)}%</div>
+                        <button class="zoom-btn" onclick="zoomIn()">+</button>
+                        <button class="zoom-btn" onclick="resetZoom()"><i class="fas fa-sync-alt"></i></button>
+                        <button class="zoom-btn" onclick="enterFullscreen()"><i class="fas fa-expand"></i></button>
+                        <button class="zoom-btn" onclick="speakText('${currentImage.name}')" title="อ่านชื่อรูปภาพ">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                    </div>
+                    <img class="zoomable-image" 
+                         src="${currentImage.data}" 
+                         alt="${currentImage.name}" 
+                         style="transform: scale(${currentZoom}) translate(${currentTranslateX}px, ${currentTranslateY}px);"
+                         onclick="toggleZoom()">
+                    <div class="swipe-area" id="swipeArea"></div>
+                    <div class="drag-info" id="dragInfo">ลากเมาส์เพื่อขยับรูปภาพ</div>
+                    <div class="gesture-hint" id="gestureHint">ปัดซ้าย/ขวาเพื่อเปลี่ยนรูปภาพ</div>
+                `;
+                
+                const zoomableImage = imageModalContent.querySelector('.zoomable-image');
+                const newDragInfo = imageModalContent.querySelector('#dragInfo');
+                const newSwipeArea = imageModalContent.querySelector('#swipeArea');
+                const newGestureHint = imageModalContent.querySelector('#gestureHint');
+                
+                setupImageDrag(zoomableImage, imageModalContent, false);
+                zoomableImage.addEventListener('wheel', handleImageZoom);
+                
+                // ตั้งค่าใหม่สำหรับการปัดบนมือถือ
+                if (isMobile) {
+                    setupTouchGestures();
+                    gestureHint = newGestureHint;
+                }
+            }
+
+            function handleImageZoom(e) {
+                e.preventDefault();
+                
+                if (e.deltaY < 0) {
+                    zoomIn();
+                } else {
+                    zoomOut();
+                }
+            }
+
+            function zoomIn() {
+                if (currentZoom < 3) {
+                    currentZoom += 0.1;
+                    updateZoom();
+                }
+            }
+
+            function zoomOut() {
+                if (currentZoom > 0.5) {
+                    currentZoom -= 0.1;
+                    updateZoom();
+                }
+            }
+
+            function resetZoom() {
+                currentZoom = 1;
+                updateZoom();
+                resetImagePosition();
+            }
+
+            function toggleZoom() {
+                if (currentZoom === 1) {
+                    currentZoom = 2;
+                } else {
+                    currentZoom = 1;
+                }
+                updateZoom();
+                resetImagePosition();
+            }
+
+            function updateZoom() {
+                const zoomableImage = imageModalContent.querySelector('.zoomable-image');
+                const zoomLevel = imageModalContent.querySelector('.zoom-level');
+                if (zoomableImage && zoomLevel) {
+                    zoomableImage.style.transform = `scale(${currentZoom}) translate(${currentTranslateX}px, ${currentTranslateY}px)`;
+                    zoomLevel.textContent = `${Math.round(currentZoom * 100)}%`;
+                }
+            }
+
+            function resetImagePosition() {
+                currentTranslateX = 0;
+                currentTranslateY = 0;
+                const zoomableImage = imageModalContent.querySelector('.zoomable-image');
+                if (zoomableImage) {
+                    zoomableImage.style.transform = `scale(${currentZoom}) translate(0px, 0px)`;
+                }
+            }
+
+            function prevImage() {
+                if (currentImages.length > 1) {
+                    currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+                    updateImageDisplay();
+                    resetZoom();
+                    resetImagePosition();
+                }
+            }
+
+            function nextImage() {
+                if (currentImages.length > 1) {
+                    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+                    updateImageDisplay();
+                    resetZoom();
+                    resetImagePosition();
+                }
+            }
+
+            // Fullscreen Functions
+            function enterFullscreen() {
+                const currentImage = currentImages[currentImageIndex];
+                fullscreenImage.src = currentImage.data;
+                fullscreenImage.alt = currentImage.name;
+                fullscreenCounter.textContent = `${currentImageIndex + 1}/${currentImages.length}`;
+                fullscreenZoomLevel.textContent = `${Math.round(fullscreenZoom * 100)}%`;
+                
+                fullscreenMode.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                fullscreenCurrentTranslateX = 0;
+                fullscreenCurrentTranslateY = 0;
+                fullscreenImage.style.transform = `scale(${fullscreenZoom}) translate(0px, 0px)`;
+                
+                setupImageDrag(fullscreenImage, fullscreenMode, true);
+                updateFullscreenZoom();
+                
+                // แสดงคำแนะนำการปัดบนมือถือ
+                if (isMobile) {
+                    showGestureHint();
+                }
+            }
+
+            function exitFullscreen() {
+                fullscreenMode.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            function fullscreenPrevImage() {
+                if (currentImages.length > 1) {
+                    currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+                    const currentImage = currentImages[currentImageIndex];
+                    fullscreenImage.src = currentImage.data;
+                    fullscreenCounter.textContent = `${currentImageIndex + 1}/${currentImages.length}`;
+                    fullscreenResetZoom();
+                    fullscreenResetPosition();
+                }
+            }
+
+            function fullscreenNextImage() {
+                if (currentImages.length > 1) {
+                    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+                    const currentImage = currentImages[currentImageIndex];
+                    fullscreenImage.src = currentImage.data;
+                    fullscreenCounter.textContent = `${currentImageIndex + 1}/${currentImages.length}`;
+                    fullscreenResetZoom();
+                    fullscreenResetPosition();
+                }
+            }
+
+            function fullscreenZoomIn() {
+                if (fullscreenZoom < 3) {
+                    fullscreenZoom += 0.1;
+                    updateFullscreenZoom();
+                }
+            }
+
+            function fullscreenZoomOut() {
+                if (fullscreenZoom > 0.5) {
+                    fullscreenZoom -= 0.1;
+                    updateFullscreenZoom();
+                }
+            }
+
+            function fullscreenResetZoom() {
+                fullscreenZoom = 1;
+                updateFullscreenZoom();
+                fullscreenResetPosition();
+            }
+
+            function updateFullscreenZoom() {
+                fullscreenImage.style.transform = `scale(${fullscreenZoom}) translate(${fullscreenCurrentTranslateX}px, ${fullscreenCurrentTranslateY}px)`;
+                fullscreenZoomLevel.textContent = `${Math.round(fullscreenZoom * 100)}%`;
+            }
+
+            function toggleFullscreenInfo() {
+                showFullscreenInfo = !showFullscreenInfo;
+                const elements = [
+                    fullscreenCounter,
+                    document.querySelector('.fullscreen-controls'),
+                    document.querySelector('.fullscreen-nav')
+                ];
+                
+                elements.forEach(el => {
+                    if (el) {
+                        el.style.opacity = showFullscreenInfo ? '1' : '0';
+                    }
+                });
+            }
+
+            // Global functions
+            window.closeAlbumModal = function(){ 
+                albumModal.style.display='none'; 
+                document.body.style.overflow = 'auto';
+            };
+
+            window.closeImageModal = function(){ 
+                imageModal.style.display='none'; 
+                document.body.style.overflow = 'auto';
+                resetImagePosition();
+            };
+
+            window.zoomIn = zoomIn;
+            window.zoomOut = zoomOut;
+            window.resetZoom = resetZoom;
+            window.toggleZoom = toggleZoom;
+            window.prevImage = prevImage;
+            window.nextImage = nextImage;
+            window.enterFullscreen = enterFullscreen;
+            window.exitFullscreen = exitFullscreen;
+            window.fullscreenPrevImage = fullscreenPrevImage;
+            window.fullscreenNextImage = fullscreenNextImage;
+            window.fullscreenZoomIn = fullscreenZoomIn;
+            window.fullscreenZoomOut = fullscreenZoomOut;
+            window.fullscreenResetZoom = fullscreenResetZoom;
+            window.toggleFullscreenInfo = toggleFullscreenInfo;
+            window.resetImagePosition = resetImagePosition;
+
+            // ฟังก์ชันจัดการแกลเลอรี
+            window.showCreateAlbumModal = showCreateAlbumModal;
+            window.closeCreateAlbumModal = closeCreateAlbumModal;
+            window.showAddPhotosModal = showAddPhotosModal;
+            window.closeAddPhotosModal = closeAddPhotosModal;
+            window.showAddGalleryPhotoModal = showAddGalleryPhotoModal;
+            window.closeAddGalleryPhotoModal = closeAddGalleryPhotoModal;
+            window.handleFileSelect = handleFileSelect;
+            window.handleGalleryPhotoSelect = handleGalleryPhotoSelect;
+            window.removeSelectedFile = removeSelectedFile;
+            window.savePhotosToAlbum = savePhotosToAlbum;
+            window.saveGalleryPhoto = saveGalleryPhoto;
+            window.deletePhotoFromAlbum = deletePhotoFromAlbum;
+            window.deleteGalleryPhoto = deleteGalleryPhoto;
+            window.deleteAlbum = deleteAlbum;
+            window.deleteCurrentAlbum = deleteCurrentAlbum;
+            window.editAlbum = editAlbum;
+
+            // ฟังก์ชันเสียง
+            window.playWelcomeMessage = playWelcomeMessage;
+            window.toggleVolume = toggleVolume;
+            window.speakText = speakText;
+
+            // ฟังก์ชันประวัติ
+            window.showHistoryModal = showHistoryModal;
+            window.closeHistoryModal = closeHistoryModal;
+            window.clearHistory = clearHistory;
+
+            // ฟังก์ชันอัปโหลดจาก URL
+            window.loadGalleryPhotoFromURL = loadGalleryPhotoFromURL;
+            window.loadAlbumPhotoFromURL = loadAlbumPhotoFromURL;
+
+            // ฟังก์ชันมือถือ
+            window.toggleSearch = toggleSearch;
+
+            // Event listeners
+            window.addEventListener('click', function(event) {
+                if (event.target === albumModal) {
+                    closeAlbumModal();
+                }
+                if (event.target === imageModal) {
+                    closeImageModal();
+                }
+                if (event.target === fullscreenMode) {
+                    exitFullscreen();
+                }
+                if (event.target === createAlbumModal) {
+                    closeCreateAlbumModal();
+                }
+                if (event.target === addPhotosModal) {
+                    closeAddPhotosModal();
+                }
+                if (event.target === addGalleryPhotoModal) {
+                    closeAddGalleryPhotoModal();
+                }
+                if (event.target === historyModal) {
+                    closeHistoryModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    if (fullscreenMode.style.display === 'flex') {
+                        exitFullscreen();
+                    } else if (imageModal.style.display === 'flex') {
+                        closeImageModal();
+                    } else if (albumModal.style.display === 'flex') {
+                        closeAlbumModal();
+                    } else if (createAlbumModal.style.display === 'flex') {
+                        closeCreateAlbumModal();
+                    } else if (addPhotosModal.style.display === 'flex') {
+                        closeAddPhotosModal();
+                    } else if (addGalleryPhotoModal.style.display === 'flex') {
+                        closeAddGalleryPhotoModal();
+                    } else if (historyModal.style.display === 'flex') {
+                        closeHistoryModal();
+                    }
+                }
+                
+                if (imageModal.style.display === 'flex') {
+                    if (event.key === 'ArrowLeft') {
+                        prevImage();
+                    } else if (event.key === 'ArrowRight') {
+                        nextImage();
+                    } else if (event.key === 'f' || event.key === 'F') {
+                        enterFullscreen();
+                    } else if (event.key === 'r' || event.key === 'R') {
+                        resetImagePosition();
+                    }
+                }
+                
+                if (fullscreenMode.style.display === 'flex') {
+                    if (event.key === 'ArrowLeft') {
+                        fullscreenPrevImage();
+                    } else if (event.key === 'ArrowRight') {
+                        fullscreenNextImage();
+                    } else if (event.key === 'i' || event.key === 'I') {
+                        toggleFullscreenInfo();
+                    } else if (event.key === 'r' || event.key === 'R') {
+                        fullscreenResetPosition();
+                    }
+                }
+            });
+
+            // ซูมด้วยลูกกลิ้งเมาส์ในโหมดเต็มจอ
+            fullscreenImage.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    fullscreenZoomIn();
+                } else {
+                    fullscreenZoomOut();
+                }
+            });
+
+            // Drag and drop
+            const fileUpload = document.querySelector('.file-upload');
+            fileUpload.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                fileUpload.style.borderColor = '#00cc88';
+                fileUpload.style.background = 'rgba(0,204,136,0.1)';
+            });
+
+            fileUpload.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                fileUpload.style.borderColor = '#555';
+                fileUpload.style.background = 'transparent';
+            });
+
+            fileUpload.addEventListener('drop', function(e) {
+                e.preventDefault();
+                fileUpload.style.borderColor = '#555';
+                fileUpload.style.background = 'transparent';
+                handleFileSelect(e.dataTransfer.files);
+            });
+
+            createAlbumForm.addEventListener('submit', createNewAlbum);
+
+            searchBox.addEventListener('input', render);
+            catSelect.addEventListener('change', render);
+            
+            tabGallery.addEventListener('click', ()=>{
+                currentTab='gallery';
+                tabGallery.classList.add('active');
+                tabAlbums.classList.remove('active');
+                tabHistory.classList.remove('active');
+                
+                // อัปเดตการนำทางมือถือ
+                mobileNavButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.mobile-nav-btn[data-tab="gallery"]').classList.add('active');
+                
+                render();
+            });
+            
+            tabAlbums.addEventListener('click', ()=>{
+                currentTab='albums';
+                tabAlbums.classList.add('active');
+                tabGallery.classList.remove('active');
+                tabHistory.classList.remove('active');
+                
+                // อัปเดตการนำทางมือถือ
+                mobileNavButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.mobile-nav-btn[data-tab="albums"]').classList.add('active');
+                
+                render();
+            });
+
+            tabHistory.addEventListener('click', ()=>{
+                currentTab='history';
+                tabHistory.classList.add('active');
+                tabGallery.classList.remove('active');
+                tabAlbums.classList.remove('active');
+                
+                // อัปเดตการนำทางมือถือ
+                mobileNavButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.mobile-nav-btn[data-tab="history"]').classList.add('active');
+                
+                render();
+            });
+
+            // รอให้โหลดเสียงทั้งหมดก่อน
+            window.speechSynthesis.onvoiceschanged = function() {
+                // เสียงพร้อมใช้งาน
+            };
+
+            // Initialize
+            loadData();
+
+        })();
+    </script>
 </body>
 </html>
